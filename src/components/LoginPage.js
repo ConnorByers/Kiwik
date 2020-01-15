@@ -28,7 +28,7 @@ class LoginPage extends Component {
             console.log('Thing here:')
             console.log(res.data.success);
             if(res.data.success){
-                this.props.addSuccessLogin(res.data.username);
+                this.props.addSuccessLogin({username: res.data.username, id:res.data.id});//add id here then incorporate it into actions and then reducer and then tweetfeed as prop and use it to verify if it can delete
                 this.props.history.push('/');
             }
             else{

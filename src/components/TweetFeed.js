@@ -55,7 +55,7 @@ class TweetFeed extends Component {
                 {tweets.map((tweet)=>(
                     <this.Wrapper2 key={tweet._id}>
                         <this.Wrapper3>
-                        <h4 className="mb-2 mt-2">{tweet.username} {this.props.isAuthenticated&&this.props.username===tweet.username?<Button onClick={this.onDeleteClick.bind(this,tweet._id)} className="btn btn-sm float-right" color="danger">Delete</Button>:null}</h4>
+                        <h4 className="mb-2 mt-2">{tweet.username} {this.props.isAuthenticated&&this.props.userid===tweet.userid?<Button onClick={this.onDeleteClick.bind(this,tweet._id)} className="btn btn-sm float-right" color="danger">Delete</Button>:null}</h4>
                         <this.Line/>
                         <p>{tweet.message}</p>
                         {tweet.imageURL?<Media src={tweet.imageURL} style={imageStyle} />:null}
@@ -86,7 +86,8 @@ TweetFeed.propTypes = {
 const mapStateToProps = (curState) => ({
     tweet: curState.tweet,
     username: curState.tweet.username,
-    isAuthenticated: curState.tweet.isAuthenticated
+    isAuthenticated: curState.tweet.isAuthenticated,
+    userid: curState.tweet.userid
 });
 
 export default connect(mapStateToProps,{getTweets, deleteTweet, postComment})(TweetFeed);

@@ -3,7 +3,8 @@ import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, ADD_SUCCESS_LOGIN, 
 const initState = {
     tweets: [],
     username:'',
-    isAuthenticated: false
+    isAuthenticated: false,
+    userid:''
 }
 
 export default function(state=initState,action){
@@ -31,19 +32,22 @@ export default function(state=initState,action){
         case ADD_SUCCESS_LOGIN:
             return {
                 ...state,
-                username: action.data,
+                username: action.data.username,
+                userid: action.data.id,
                 isAuthenticated: true
             }
         case LOGOUT:
             return{
                 ...state,
                 username: null,
+                userid: null,
                 isAuthenticated: false
             }
         case ADD_USER:
             return{
                 ...state,
-                username: action.data,
+                username: action.data.username,
+                userid: action.data.id,
                 isAuthenticated: true
             }
         default:

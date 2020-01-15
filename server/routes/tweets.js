@@ -17,6 +17,7 @@ router.post('/',AuthMiddleware,(req,res)=>{
         username: req.body.username,
         message: req.body.message,
         date: req.body.date,
+        userid: req.userid,
         //likes: req.body.likes,
         comments: [],
         imageURL: req.body.imageURL

@@ -16,10 +16,10 @@ class TweetPoster extends Component {
         e.preventDefault();
         console.log(this.state.message);
         if(this.state.imageUrl===''&&!this.state.addImage){
-            this.props.postTweet({username: this.props.username, message: this.state.message});
+            this.props.postTweet({username: this.props.username, message: this.state.message, userid: this.props.userid});
         }
         else{
-            this.props.postTweet({username: this.props.username, message: this.state.message,imageURL:this.state.imageUrl});
+            this.props.postTweet({username: this.props.username, message: this.state.message,imageURL:this.state.imageUrl,userid: this.props.userid});
         }
         this.setState({message: '',addImage:false,imageUrl:''});
     }
@@ -52,6 +52,7 @@ class TweetPoster extends Component {
 }
 const mapStateToProps = (curState)=>({
     username: curState.tweet.username,
-    isAuthenticated: curState.tweet.isAuthenticated
+    isAuthenticated: curState.tweet.isAuthenticated,
+    userid: curState.tweet.userid
 });
 export default connect(mapStateToProps,{postTweet})(TweetPoster);

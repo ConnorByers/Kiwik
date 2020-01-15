@@ -13,7 +13,7 @@ class MainPage extends Component {
         axios.get('api/users/checkcookie')
         .then(res=>{
             console.log(`User Found is ${res.data.username}`);
-            this.props.addUser(res.data.username);
+            this.props.addUser({username: res.data.username, id:res.data.id});
         }).catch((err)=>{
             console.log("No saved cookie");
         });

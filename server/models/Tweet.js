@@ -22,18 +22,13 @@ const TweetSchema = new Schema({
         },
         message: String
     }],
+    userid: {
+        type: String,
+        required: true
+    },
     imageURL: {
         type: String
     }
 });
-//{type: Schema.Types.ObjectId, ref:'Comment'}
-const CommentSchema = new Schema({
-    username: {
-        type: String,
-        default: 'Connor'
-    },
-    message: String
-});
 
 module.exports.Tweet = mongoose.model('Tweet',TweetSchema);
-module.exports.Comment = mongoose.model('Comment',CommentSchema);

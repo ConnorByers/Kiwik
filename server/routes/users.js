@@ -74,7 +74,7 @@ router.post('/auth', (req,res)=>{
                         expiresIn: '1h'
                     });
                     res.cookie('token',jwtToken,{httpOnly:true});
-                    res.json({success: true, username: foundUser.username});
+                    res.json({success: true, username: foundUser.username, id: foundUser._id});
                 }  
             });
         }
@@ -82,10 +82,7 @@ router.post('/auth', (req,res)=>{
 });
 router.get('/checkcookie',middleware,(req,res)=>{
     console.log("got to check cookie");
-    //res.json({
-    //    username: "Conas"
-   // });
-    res.json({username: req.username});
+    res.json({username: req.username, id: req.userid});
 });
 
 module.exports = router;

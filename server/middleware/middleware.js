@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const jwtSecret = "";
+const {jwtSecret} = require('../secrets');
 
 const middlewareAuth = (req,res,next)=>{
     const token = req.cookies.token;

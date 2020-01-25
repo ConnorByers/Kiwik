@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ADD_ERROR_MESSAGE, REMOVE_ERROR_MESSAGE, ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER } from './types';
+import { ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER } from './types';
 
 export const addSuccessLogin = (user) => {
     console.log(user);

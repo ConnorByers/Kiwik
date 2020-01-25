@@ -7,7 +7,8 @@ const users = require('./routes/users');
 
 const app = express();
 
-const MongoURI = 'mongodb+srv://BigUser98:D9j6h4bgh1@cluster0-phjyd.mongodb.net/test?retryWrites=true&w=majority';
+const {MongoURI} = require('./secrets');
+
 mongoose.connect(MongoURI,{useNewUrlParser:true, useUnifiedTopology:true,useCreateIndex: true})
 .then(()=>console.log('MongoDB connected'))
 .catch(err=>console.log(err));

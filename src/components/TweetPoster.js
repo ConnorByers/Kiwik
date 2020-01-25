@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { postTweet } from '../actions/tweetActions';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import styled from 'styled-components';
 
 class TweetPoster extends Component {
@@ -38,7 +38,7 @@ class TweetPoster extends Component {
                     <Label>Message:</Label>
                     <Input type="text" value={this.state.message} onChange={this.onChange}/>
                     <FormGroup>
-                        <Input className="ml-2" type="checkbox" onClick={this.toggle}/>
+                        <Input className="ml-2" type="checkbox" checked={this.state.addImage} onClick={this.toggle}/>
                         <p className="ml-4">Add Image</p>
                         {this.state.addImage?<Input type="text" className="w-50" value={this.state.imageUrl} onChange={this.onImageUrlChange}/>:null}
                     </FormGroup>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { postComment } from '../actions/tweetActions';
-import { Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
+import { Button, Form, Label, Input} from 'reactstrap';
 
 class CommentPoster extends Component {
     constructor(props){

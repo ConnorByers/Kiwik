@@ -4,12 +4,11 @@ import { Provider } from 'react-redux';
 import store from './store';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import './harbor/css/bootstrap4-harbor.min.css';
-import { Container } from 'reactstrap';
-import {Link, Route,Switch, BrowserRouter} from 'react-router-dom';
+import {Route,Switch, BrowserRouter} from 'react-router-dom';
 import MainPage from './components/MainPage';
 import RegisterPage from './components/RegisterPage';
 import LoginPage from './components/LoginPage';
-function App() { //delete cookie?
+function App() {
   return (
 
     <Provider store={store}>

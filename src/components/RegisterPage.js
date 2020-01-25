@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import {Container,Form,FormGroup,Label,Input,Button} from 'reactstrap';
 import {connect} from 'react-redux';
 import Axios from 'axios';
 import styled from 'styled-components';

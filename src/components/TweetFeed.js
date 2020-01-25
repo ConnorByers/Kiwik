@@ -19,6 +19,7 @@ class TweetFeed extends Component {
     Wrapper = styled.div`
         font-family: "Segoe UI","Helvetica";
         margin-top: 2em;
+        padding-bottom: 2em;
     `;
     Wrapper2 = styled.div`
         width: 75%;

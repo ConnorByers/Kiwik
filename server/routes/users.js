@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const middleware = require('../middleware/middleware');
+const {jwtSecret} = require('../secrets');
 router.post('/',(req,res)=>{
     const posUser = req.body;
 
@@ -43,7 +44,6 @@ router.post('/',(req,res)=>{
         });
     })
 });
-const jwtSecret = "";
 router.post('/auth', (req,res)=>{
     const { email, password } = req.body;
     if(!email||!password){

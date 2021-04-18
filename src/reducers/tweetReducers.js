@@ -1,4 +1,4 @@
-import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER } from '../actions/types';
+import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER, PATCH_TWEET } from '../actions/types';
 
 const initState = {
     tweets: [],
@@ -20,6 +20,7 @@ export default function(state=initState,action){
                 tweets: [action.data,...state.tweets]
             }
         case POST_COMMENT:
+        case PATCH_TWEET:
             return {
                 ...state,
                 tweets: state.tweets.map(tweet=>tweet._id === action.data._id ? action.data : tweet)

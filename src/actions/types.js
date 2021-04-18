@@ -1,6 +1,7 @@
 export const GET_TWEETS = 'GET_TWEETS';
 export const POST_TWEET = 'POST_TWEET';
 export const POST_COMMENT = 'POST_COMMENT';
+export const PATCH_TWEET = 'PATCH_TWEET';
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const DELETE_TWEET = 'DELETE_TWEET';
 export const ADD_ERROR_MESSAGE = 'ADD_ERROR_MESSAGE';

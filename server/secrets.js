@@ -1,3 +1,4 @@
-module.exports.jwtSecret = ''; //Enter jST Secret here
-module.exports.MongoURI = ''; //Enter MongoDB connect link
+const config = require('dotenv').config()
 
+module.exports.jwtSecret = config.parsed['jwtSecret'];
+module.exports.MongoURI = config.parsed['MongoURI'];

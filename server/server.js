@@ -9,7 +9,7 @@ const app = express();
 
 const {MongoURI} = require('./secrets');
 
-mongoose.connect(MongoURI,{useNewUrlParser:true, useUnifiedTopology:true,useCreateIndex: true})
+mongoose.connect(MongoURI,{useNewUrlParser:true, useUnifiedTopology:false,useCreateIndex: true})
 .then(()=>console.log('MongoDB connected'))
 .catch(err=>console.log(err));
 

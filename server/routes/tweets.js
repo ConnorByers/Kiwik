@@ -25,6 +25,18 @@ router.post('/',AuthMiddleware,(req,res)=>{
     newTweet.save().then(tweet=>res.json(tweet));
 });
 
+router.patch('/:id',AuthMiddleware,(req,res)=>{
+    const changes = {
+        message: req.body.message,
+        date: req.body.date,
+    }
+    Tweet.findByIdAndUpdate(req.params.id, changes, { new: true }).then((updatedPost)=>res.json(updatedPost))
+    .catch(err=>{
+        console.log(err);
+        res.status(400).json({success: false});
+    });
+});
+
 router.delete('/:id',AuthMiddleware,(req,res)=>{
     Tweet.findById(req.params.id)
     .then(tweet=>tweet.remove().then(()=>res.json({success:true})))

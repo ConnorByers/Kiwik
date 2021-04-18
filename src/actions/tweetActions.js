@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET } from './types';
+import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET } from './types';
 
 export const getTweets = () => dispatch => {
     console.log('in getTweets');
@@ -32,4 +32,12 @@ export const deleteTweet = (id) => dispatch => {
         type: DELETE_TWEET,
         data: id
     })).catch(err=>console.log("You must login to delete a comment"));
+};
+
+export const patchTweet = (id, tweetUpdates) => dispatch => {
+    axios.patch(`/api/tweets/${id}`, tweetUpdates)
+    .then(res=>dispatch({
+        type: PATCH_TWEET,
+        data: res.data
+    })).catch(err=>console.log("You must login to update a comment"));
 };

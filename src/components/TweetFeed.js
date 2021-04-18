@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
-import { getTweets, deleteTweet, postComment } from '../actions/tweetActions';
+import { getTweets, deleteTweet, postComment, patchTweet } from '../actions/tweetActions';
 import { connect } from 'react-redux';
-import { Button, Media } from 'reactstrap';
+import { Button, Media, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
 import CommentPoster from './CommentPoster';
 import styled from 'styled-components';
 class TweetFeed extends Component {
+    constructor(props){
+        super(props);
+        this.state={message: ''};
+        this.onChange = this.onChange.bind(this);
+    }
+
     componentDidMount(){
         console.log('ii');
         this.props.getTweets();
@@ -16,6 +22,12 @@ class TweetFeed extends Component {
         console.log(id);
         this.props.deleteTweet(id);
     }//#56baed
+    onUpdateClick(id, input){
+        console.log('update clicked')
+        console.log(id)
+        console.log(input)
+        this.props.patchTweet(id, {message: input})
+    }
     Wrapper = styled.div`
         font-family: "Segoe UI","Helvetica";
         margin-top: 2em;
@@ -44,19 +56,23 @@ class TweetFeed extends Component {
         margin: 1em 0;
         padding: 0;
     `;
+
+    onChange = (e) => {this.setState({message: e.target.value});}
+
     render() {
         const imageStyle = {
             maxHeight: 456,
             maxWidth: 456
         }
         const tweets = this.props.tweet.tweets;
-        console.log(tweets);
         return (
             <this.Wrapper>
                 {tweets.map((tweet)=>(
                     <this.Wrapper2 key={tweet._id}>
                         <this.Wrapper3>
                         <h4 className="mb-2 mt-2">{tweet.username} {this.props.isAuthenticated&&this.props.userid===tweet.userid?<Button onClick={this.onDeleteClick.bind(this,tweet._id)} className="btn btn-sm float-right" color="danger">Delete</Button>:null}</h4>
+                        <Input type="text" value={this.state.message} onChange={this.onChange}/>
+                        <Button onClick={this.onUpdateClick.bind(this, tweet._id, this.state.message)}>Update</Button>
                         <this.Line/>
                         <p>{tweet.message}</p>
                         {tweet.imageURL?<Media src={tweet.imageURL} style={imageStyle} />:null}
@@ -91,4 +107,4 @@ const mapStateToProps = (curState) => ({
     userid: curState.tweet.userid
 });
 
-export default connect(mapStateToProps,{getTweets, deleteTweet, postComment})(TweetFeed);
+export default connect(mapStateToProps,{getTweets, deleteTweet, postComment, patchTweet})(TweetFeed);

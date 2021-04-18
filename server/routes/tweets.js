@@ -33,20 +33,8 @@ router.delete('/:id',AuthMiddleware,(req,res)=>{
         console.log(err);
     });
 });
-/*
-router.get('/comment/:id',(req,res)=>{
-    Tweet.findById(req.params.id)
-    .then(tweet=>{
-        res.json(tweet.comments);
-    })
-    .catch(err=>res.json({success: false}));
-});
-*/
+
 router.post('/comment/:id',AuthMiddleware,(req,res)=>{
-    /*const newComment = new Comment({
-        username: req.body.username,
-        message: req.body.message
-    });*/
     const newComment = {
         username: req.body.username,
         message: req.body.message

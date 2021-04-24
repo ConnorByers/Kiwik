@@ -10,8 +10,13 @@ export default function Input(props) {
     } = props;
     return (
         <div className="inputWrapper">
-            {value && <p className="inputLabel">{placeholder}</p>}
-            <input className="InputStyle" onChange={(e) => setValue(e.target.value)} id={id} name={id} type={type} value={value} placeholder={placeholder} />
+            {value && type !== 'textarea' && <p className="inputLabel">{placeholder}</p>}
+            {type === 'textarea' ?
+                <textarea className="InputStyle" onChange={(e) => setValue(e.target.value)} id={id} name={id} value={value} placeholder={placeholder} rows="5" cols="50" />
+                :
+                <input className="InputStyle" onChange={(e) => setValue(e.target.value)} id={id} name={id} type={type} value={value} placeholder={placeholder} />
+            }
+            
         </div>
     )
 }

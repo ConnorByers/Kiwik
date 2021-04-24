@@ -111,6 +111,7 @@ html, body {
     border-radius: 4px;
     margin: 0;
     padding: 1rem;
+    font-family: 'Lato', sans-serif;
 }
 
 .InputStyle:focus {
@@ -118,10 +119,15 @@ html, body {
     border: 2px solid rgb(29,161,242);
 }
 
+textarea.InputStyle {
+    resize: none;
+}
+
 .inputLabel {
     margin: 0;
     margin-bottom: 3px;
     font-size: 16px;
+    text-align: left;
 }
 
 .inputWrapper {
@@ -159,13 +165,15 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 300px;
 }
 
 .leftbarinner {
     position: fixed;
     height: 100%;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .rightbar {
@@ -251,4 +259,110 @@ html, body {
 
 .logowrapper {
     margin: 0;
+}
+
+.logoinner {
+    margin: 0;
+    float: right;
+}
+
+.modalWrapper {
+    margin: auto;
+    text-align: center;
+}
+
+.profileContainer {
+    margin: 0;
+    margin-bottom: 2rem;
+}
+
+.profileInnerWrapper {
+    border-radius: 9999px;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    flex-basis: auto;
+}
+
+.profilepic {
+    object-fit: cover;
+    width: 48px;
+    height: 48px;
+}
+
+.tweetButtonWrapper {
+    margin: 1rem 0;
+}
+
+.profileWrapper {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    margin-left: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileNameWrapper {
+    margin-left: 0.5rem;
+}
+
+.profileNameText {
+    font-weight: bold;
+}
+
+.badgeIconWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 1.5rem;
+    border-radius: 1rem;
+}
+
+.badgeIconWrapper:hover {
+    cursor: pointer;
+    background-color: rgb(238, 240, 241);
+}
+
+.badgeIconInner {
+    margin: 0;
+    margin-left: 2px;
+}
+
+.badgeWrapper {
+    margin: 0;
+    margin-left: 1rem;
+    text-align: center;
+    height: 1.5rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badgeWrapper:hover {
+    cursor: pointer;
+}
+
+.badgeText {
+    margin: 0 0.5rem;
+    color: white;
+}
+
+.red {
+    background-color: #ff4200;
+}
+
+.red:hover {
+    background-color: #e24007;
+}
+
+.blue {
+    background-color: rgb(29,161,242);
+}
+
+.blue:hover {
+    background-color: #1b95e0;
 }

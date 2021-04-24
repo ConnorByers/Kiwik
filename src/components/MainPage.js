@@ -7,7 +7,10 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { addUser } from '../actions/userActions';
 import logo from '../kiwi.svg';
-
+import Button from './Button';
+import TweetModal from './TweetModal';
+import icon from '../icon.png';
+import Badge from './Badge';
 const MainPage = (props) => {
     useEffect(()=>{
         axios.get('api/users/checkcookie')
@@ -20,37 +23,53 @@ const MainPage = (props) => {
 
     const [isTweetPosterModalOpen, setTweetPosterModalOpen] = useState(false);
 
-    render() {
-        return (
-            <div>
-                {props.isAuthenticated &&
-                    <>
-                        <h1>Welcome {props.username}</h1>
-                        <div>
-                            <TweetPoster />
-                        </div>
-                    </>
-                }
-                <div className="Container">
-                    <div className="leftbar">
-                        <div className="leftbarinner">
-                            <div className="logoWrapper">
+    return (
+        <div>
+            {props.isAuthenticated &&
+                <>
+                    <h1>Welcome {props.username}</h1>
+                    <div>
+                        <TweetPoster />
+                    </div>
+                </>
+            }
+            <TweetModal isOpen={isTweetPosterModalOpen} setOpen={setTweetPosterModalOpen} />
+            <div className="Container">
+                <div className="leftbar">
+                    <div className="leftbarinner">
+                        <div className="logoWrapper">
+                            <div className="logoinner">
                                 <img src={logo} className="logo" />
                             </div>
-                            <p>Hello</p>
+                        </div>
+                        <div className="profileContainer">
+                            <div className="tweetButtonWrapper">
+                                <Button onClick={()=>setTweetPosterModalOpen(true)}>Tweet</Button>
+                            </div>
+                            <div className="profileWrapper">
+                                <div className="profileInnerWrapper">
+                                    <img src={icon} className="profilepic" />
+                                </div>
+                                <div className="profileNameWrapper">
+                                    <p className="profileNameText">Connor Byers</p>
+                                </div>
+                                <Badge onClick={()=>console.log('clicked')} color="red">
+                                    <p className="badgeText">Logout</p>
+                                </Badge>
+                            </div>
                         </div>
                     </div>
-                    <div className="tweetFeedWrapper">
-                        <TweetFeed /> 
-                    </div>  
-                    <div className="rightbar">
-                        <SignInBox />
-                    </div>
                 </div>
-                
+                <div className="tweetFeedWrapper">
+                    <TweetFeed /> 
+                </div>  
+                <div className="rightbar">
+                    <SignInBox />
+                </div>
             </div>
-        )
-    }
+            
+        </div>
+    )
 }
 
 const mapStateToProps = (curState)=>({

@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import CommentPoster from './CommentPoster';
 import Comments from './Comments';
 import icon from '../icon.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+import Badge from './Badge';
 
 class TweetFeed extends Component {
     constructor(props){
@@ -61,6 +64,12 @@ class TweetFeed extends Component {
                             <Comments tweet={tweet} />
                             {this.props.isAuthenticated && <CommentPoster id={tweet._id}/>}
                         </div>
+                        <Badge leftoffset icon>
+                            <FontAwesomeIcon icon={faEdit} />
+                        </Badge>
+                        <Badge icon>
+                            <FontAwesomeIcon icon={faTrashAlt}/>
+                        </Badge>
                     </div>
                 ))}
             </>

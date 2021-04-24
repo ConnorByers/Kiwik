@@ -1,0 +1,254 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+html, body {
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.tweetFeedWrapper {
+    flex-grow: 1;
+    margin: 0 auto;
+    padding: 0;
+    border-top-style: solid;
+    border-top-color: rgb(235, 238, 240);
+    border-top-width: 1px;
+}
+
+@media screen and (max-width: 1500px) {
+    .tweetFeedWrapper {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .tweetFeedWrapper {
+        width: 60%;
+    }
+}
+
+.tweetWrapper {
+    margin: 0;
+    padding: 1rem;
+    border-style: solid;
+    border-color: rgb(235, 238, 240);
+    border-width: 1px;
+    border-top-width: 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.profilePictureWrapper {
+    flex-grow: 0;
+    margin: 0;
+    padding: 0;
+    margin-right: 12px;
+}
+
+.innerProfilePictureWrapper {
+    flex-basis: auto;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.profilePicture {
+    object-fit: cover;
+    width: 48px;
+    height: 48px;
+}
+
+.tweetContentWrapper {
+    flex-grow: 1;
+}
+
+.usernameWrapper {
+    margin-bottom: 1rem;
+}
+
+.usernameText {
+    font-weight: bold;
+    margin: 0;
+}
+
+.messageWrapper {
+
+}
+
+.messageText {
+
+}
+
+.commentsWrapper {
+    margin: 0;
+    margin-left: 1rem;
+}
+
+.commentsTitle {
+    margin: 0;
+}
+
+.line {
+    background-color: black;
+    height: 1px;
+}
+
+.toggleText {
+    font-size: 0.75rem;
+    color: #0d669e;
+}
+
+.toggleText:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.InputStyle {
+    outline: none;
+    font-size: 1em;
+    border: 2px solid rgb(196, 207, 214);
+    border-radius: 4px;
+    margin: 0;
+    padding: 1rem;
+}
+
+.InputStyle:focus {
+    outline: none;
+    border: 2px solid rgb(29,161,242);
+}
+
+.inputLabel {
+    margin: 0;
+    margin-bottom: 3px;
+    font-size: 16px;
+}
+
+.inputWrapper {
+    margin: 1rem;
+}
+
+.formWrapper {
+    margin: auto;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.button {
+  display: inline-block;
+  border-radius: 6px;
+  padding: 0.5rem 0;
+  margin: 0.5rem 1rem;
+  width: 15rem;
+  background: rgb(29,161,242);
+  color: white;
+  border: 2px solid rgb(29,161,242);
+  cursor: pointer;
+  text-align: center;  
+}
+
+.button:hover {
+  background: #1b95e0;
+}
+
+.leftbar {
+    flex-grow: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+.leftbarinner {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+.rightbar {
+    flex-grow: 0;
+    margin: 0;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+}
+
+.Container {
+    margin: auto;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+}
+
+.SignInBoxWrapper {
+    margin-top: 1em;
+    border-style: solid;
+    border-color: rgb(235, 238, 240);
+    border-width: 1px;
+    width: 250px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: rgb(247, 249, 250);
+}
+
+.SignInBoxWrapper:hover {
+    background-color: rgb(238, 240, 241);
+}
+
+@media screen and (max-width: 1500px) {
+    .rightbar {
+        display: none;
+    }
+}
+
+.linkWrapper {
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.modalline {
+    border: 0;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: #dcdfe0;
+    margin: 0;
+    padding: 0;
+}
+
+.commentline {
+    border: 0;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: #c3c6c7;
+    margin: 0;
+    padding: 0;
+    margin-right: 4rem;
+}
+
+.commenttext {
+    font-size: 14px;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.commentuser {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0.5rem;
+}
+
+.logo {
+    object-fit: cover;
+    width: 6rem;
+    height: 6rem;
+}
+
+.logowrapper {
+    margin: 0;
+}

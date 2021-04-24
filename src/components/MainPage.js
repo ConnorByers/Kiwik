@@ -1,49 +1,54 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import TweetFeed from './TweetFeed';
 import TweetPoster from './TweetPoster';
 import TopBar from './TopBar';
-import {connect} from 'react-redux';
+import SignInBox from './SignInBox';
+import { connect } from 'react-redux';
 import axios from 'axios';
-import {Container} from 'reactstrap';
-import {addUser} from '../actions/userActions';
-import styled from 'styled-components';
+import { addUser } from '../actions/userActions';
+import logo from '../kiwi.svg';
 
-class MainPage extends Component {
-    componentDidMount(){
+const MainPage = (props) => {
+    useEffect(()=>{
         axios.get('api/users/checkcookie')
-        .then(res=>{
-            console.log(`User Found is ${res.data.username}`);
-            this.props.addUser({username: res.data.username, id:res.data.id});
-        }).catch((err)=>{
+        .then(res => {
+            props.addUser({ username: res.data.username, id:res.data.id });
+        }).catch((err) => {
             console.log("No saved cookie");
         });
-    }
-    background = styled.div`
-    background: #DDDDDD;
-    `;
-    tweetPosterBackground = styled.div`
-    background: white;
-    border-radius: 25px;
-    border: 2px solid lightblue;
-    `;
-    welcome = styled.h1`
-	text-align:center;
-	text-shadow:1px 1px 1px black;
-	font-size:50px;
-    `;
+    }, []);
+
+    const [isTweetPosterModalOpen, setTweetPosterModalOpen] = useState(false);
+
     render() {
-        //const isAuthenticated = this.props.username;
         return (
-                <this.background>
-                    <TopBar />
-                    {this.props.isAuthenticated?
-                     <this.welcome>Welcome {this.props.username}</this.welcome> : null
+            <div>
+                {props.isAuthenticated &&
+                    <>
+                        <h1>Welcome {props.username}</h1>
+                        <div>
+                            <TweetPoster />
+                        </div>
+                    </>
                 }
-                    <Container>
-                        {this.props.isAuthenticated?<this.tweetPosterBackground><TweetPoster /></this.tweetPosterBackground>:null}
+                <div className="Container">
+                    <div className="leftbar">
+                        <div className="leftbarinner">
+                            <div className="logoWrapper">
+                                <img src={logo} className="logo" />
+                            </div>
+                            <p>Hello</p>
+                        </div>
+                    </div>
+                    <div className="tweetFeedWrapper">
                         <TweetFeed /> 
-                    </Container>  
-                </this.background>
+                    </div>  
+                    <div className="rightbar">
+                        <SignInBox />
+                    </div>
+                </div>
+                
+            </div>
         )
     }
 }
@@ -53,4 +58,8 @@ const mapStateToProps = (curState)=>({
     isAuthenticated: curState.tweet.isAuthenticated
 });
 
-export default connect(mapStateToProps,{addUser})(MainPage);
+const mapDispatchToProps = {
+    addUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

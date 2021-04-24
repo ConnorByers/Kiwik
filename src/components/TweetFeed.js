@@ -1,103 +1,71 @@
 import React, { Component } from 'react'
 import { getTweets, deleteTweet, postComment, patchTweet } from '../actions/tweetActions';
 import { connect } from 'react-redux';
-import { Button, Media, Input } from 'reactstrap';
-import PropTypes from 'prop-types';
 import CommentPoster from './CommentPoster';
-import styled from 'styled-components';
+import Comments from './Comments';
+import icon from '../icon.png';
+
 class TweetFeed extends Component {
     constructor(props){
         super(props);
-        this.state={message: ''};
+        this.state={ message: '' };
         this.onChange = this.onChange.bind(this);
-    }
+    };
 
     componentDidMount(){
-        console.log('ii');
         this.props.getTweets();
-    }
+    };
 
     onDeleteClick(id){
-        console.log('clicked');
-        console.log(id);
         this.props.deleteTweet(id);
-    }//#56baed
-    onUpdateClick(id, input){
-        console.log('update clicked')
-        console.log(id)
-        console.log(input)
-        this.props.patchTweet(id, {message: input})
-    }
-    Wrapper = styled.div`
-        font-family: "Segoe UI","Helvetica";
-        margin-top: 2em;
-        padding-bottom: 2em;
-    `;
-    Wrapper2 = styled.div`
-        width: 75%;
-        margin: auto;
-        margin-top: 2em;
-        background: white;
-        border-radius: 25px;
-        border: 2px solid lightblue;
-        padding: 20px;
-    `;
-    Wrapper3 = styled.div`
-        margin-left: 1em;
-        margin-top: 1em;
-        margin-right: 1em;
-        margin-bottom: 1em;
-    `;
-    Line = styled.hr`
-        display: block;
-        height: 1px;
-        border: 0;
-        border-top: 1px solid #ccc;
-        margin: 1em 0;
-        padding: 0;
-    `;
+    };
 
-    onChange = (e) => {this.setState({message: e.target.value});}
+    onUpdateClick(id, input){
+        this.props.patchTweet(id, {message: input})
+    };
+
+    onChange = (e) => { this.setState({ message: e.target.value }); };
 
     render() {
-        const imageStyle = {
-            maxHeight: 456,
-            maxWidth: 456
-        }
         const tweets = this.props.tweet.tweets;
         return (
-            <this.Wrapper>
-                {tweets.map((tweet)=>(
-                    <this.Wrapper2 key={tweet._id}>
-                        <this.Wrapper3>
-                        <h4 className="mb-2 mt-2">{tweet.username} {this.props.isAuthenticated&&this.props.userid===tweet.userid?<Button onClick={this.onDeleteClick.bind(this,tweet._id)} className="btn btn-sm float-right" color="danger">Delete</Button>:null}</h4>
-                        <Input type="text" value={this.state.message} onChange={this.onChange}/>
-                        <Button onClick={this.onUpdateClick.bind(this, tweet._id, this.state.message)}>Update</Button>
-                        <this.Line/>
-                        <p>{tweet.message}</p>
-                        {tweet.imageURL?<Media src={tweet.imageURL} style={imageStyle} />:null}
-                        <hr />
-                        <h6>Comments:</h6>
-                        {tweet.comments.map((comment)=>(
-                            <div key={comment._id} className="ml-2">
-                                <p>{comment.username}: {comment.message}</p>
+            <>
+                {tweets.map((tweet) => (
+                    <div key={tweet._id} className="tweetWrapper">
+                        <div className="profilePictureWrapper">
+                            <div className="innerProfilePictureWrapper">
+                                <img src={icon} className="profilePicture" />
                             </div>
-                        ))}
-                        {this.props.isAuthenticated?<CommentPoster id={tweet._id}/>:<div></div>}
-                        <div className="mt-1">
-                        
                         </div>
-                        </this.Wrapper3>
-                    </this.Wrapper2>
+                        <div className="tweetContentWrapper">
+                            <div className="usernameWrapper">
+                                <p className="usernameText">
+                                    {tweet.username}
+                                </p>
+                            </div>
+                            {(this.props.isAuthenticated && this.props.userid===tweet.userid) &&
+                                <button onClick={this.onDeleteClick.bind(this,tweet._id)}>
+                                    Delete
+                                </button>
+                            }
+                            {this.props.isAuthenticated &&
+                                <>
+                                    <input type="text" value={this.state.message} onChange={this.onChange}/>
+                                    <button onClick={this.onUpdateClick.bind(this, tweet._id, this.state.message)}>Update</button>
+                                </>
+                            }
+                            <div className="messageWrapper">
+                                <p className="messageText">{tweet.message}</p>
+                            </div>
+                            {tweet.imageURL && <img src={tweet.imageURL} />}
+                            <Comments tweet={tweet} />
+                            {this.props.isAuthenticated && <CommentPoster id={tweet._id}/>}
+                        </div>
+                    </div>
                 ))}
-            </this.Wrapper>
+            </>
         )
     }
-}
-
-TweetFeed.propTypes = {
-    getTweets: PropTypes.func.isRequired,
-    tweet: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (curState) => ({
@@ -107,4 +75,11 @@ const mapStateToProps = (curState) => ({
     userid: curState.tweet.userid
 });
 
-export default connect(mapStateToProps,{getTweets, deleteTweet, postComment, patchTweet})(TweetFeed);
+const mapDispatchToProps = {
+    getTweets,
+    deleteTweet,
+    postComment,
+    patchTweet,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TweetFeed);

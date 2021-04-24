@@ -1,66 +1,54 @@
 import React, { Component } from 'react'
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    Container,
-    Button
-  } from 'reactstrap';
-import { FaKiwiBird } from 'react-icons/fa';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {logout} from '../actions/userActions';
-class TopBar extends Component {//add redux to see if authenticated. need to add logout action
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../actions/userActions';
+
+class TopBar extends Component {
     state = {
         isOpen: false
-      };
+    };
     
-      toggle = () => {
+    toggle = () => {
         this.setState({
-          isOpen: !this.state.isOpen
+            isOpen: !this.state.isOpen
         });
-      };
+    };
 
-      logoutReq = () =>{
+    logoutReq = () => {
         this.props.logout();
-      };
+    };
     
     render() {
-        const ifNotAuthNavItem = (<NavItem>
-            <Link to="/register" style={{color: "white"}}>Register </Link>
-            <Link to="/login" style={{color: "white"}}>Login</Link>
-        </NavItem>);
+        const ifNotAuthNavItem = (
+            <div>
+                <Link to="/register" style={{color: "white"}}>Register </Link>
+                <Link to="/login" style={{color: "white"}}>Login</Link>
+            </div>
+        );
 
-        const ifAuthNavItem = (<NavItem>
-            <Button onClick={this.logoutReq}>Logout</Button>
-        </NavItem>);
-
+        const ifAuthNavItem = (
+            <span>
+                <button onClick={this.logoutReq}>Logout</button>
+            </span>
+        );
 
         return (
             <div>
-                <Navbar color='info' dark expand='sm' className='mb-5'>
-                    <Container>
-                    <NavbarBrand><FaKiwiBird/></NavbarBrand>
-                        <NavbarBrand>Kiwik</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle} />
-                        <Collapse isOpen={this.state.isOpen} navbar>
-                            <Nav className='ml-auto' navbar>
-                                {this.props.isAuthenticated?ifAuthNavItem:ifNotAuthNavItem}
-                            </Nav>
-                        </Collapse>
-                    </Container>
-                </Navbar>
+                <h1>Kiwik</h1>
+                <button onClick={this.toggle} />
+                {this.props.isAuthenticated ? ifAuthNavItem : ifNotAuthNavItem}
             </div>
         )
     }
 }
 
-const mapStateToProps = (curState)=>({
+const mapStateToProps = (curState) => ({
     username: curState.tweet.username,
     isAuthenticated: curState.tweet.isAuthenticated
 });
 
-export default connect(mapStateToProps,{logout})(TopBar);
+const mapDispatchToProps = {
+    logout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

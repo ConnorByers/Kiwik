@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { postComment } from '../actions/tweetActions';
-import { Button, Form, Label, Input} from 'reactstrap';
 
 class CommentPoster extends Component {
     constructor(props){
@@ -10,26 +9,32 @@ class CommentPoster extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
     }
-    onSubmit = e => {
+    onSubmit = (e) => {
         e.preventDefault();
-        this.props.postComment(this.props.id, {username: this.props.username, message: this.state.message});
-        this.setState({message: ''});
+        this.props.postComment(this.props.id, { username: this.props.username, message: this.state.message });
+        this.setState({ message: '' });
     }
-    onChange = (e) => {this.setState({message: e.target.value});}
+    onChange = (e) => { this.setState({ message: e.target.value }); }
     render() {
         return (
             <div>
-                <Form onSubmit={this.onSubmit}>
-                    <Label>Add Comment:</Label>
-                    <Input className="w-50" type="text" value={this.state.message} onChange={this.onChange}/>
-                    <Button size="sm"color="info">Submit</Button>
-                </Form>
+                <form onSubmit={this.onSubmit}>
+                    <label>Add Comment:</label>
+                    <input type="text" value={this.state.message} onChange={this.onChange}/>
+                    <button>Submit</button>
+                </form>
             </div>
         )
     }
 }
+
 const mapStateToProps = (curState)=>({
     username: curState.tweet.username,
     isAuthenticated: curState.tweet.isAuthenticated
 });
-export default connect(mapStateToProps,{postComment})(CommentPoster);
+
+const mapDispatchToProps = {
+    postComment,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentPoster);

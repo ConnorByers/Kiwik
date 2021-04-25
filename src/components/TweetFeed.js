@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { getTweets, deleteTweet, postComment, patchTweet } from '../actions/tweetActions';
 import { connect } from 'react-redux';
-import CommentPoster from './CommentPoster';
 import Tweet from './Tweet';
 
 class TweetFeed extends Component {

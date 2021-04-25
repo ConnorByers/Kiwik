@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import TweetFeed from './TweetFeed';
-import TweetPoster from './TweetPoster';
-import TopBar from './TopBar';
 import SignInBox from './SignInBox';
 import { connect } from 'react-redux';
 import axios from 'axios';

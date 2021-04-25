@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import Badge from './Badge';
+import CommentModal from './CommentModal';
 
 function Comments(props) {
     const [isOpen, setOpen] = useState(false);
     const toggleOpen = () => {
         setOpen(!isOpen);
     };
+    const [isCommentModalOpen, setCommentModalOpen] = useState(false);
     return (
         <>
             {props.tweet.comments.length > 0 &&
             <>
+                <CommentModal setOpen={setCommentModalOpen} isOpen={isCommentModalOpen} tweetId={props.tweet._id} />
                 <div className="commentsWrapper">
                 {isOpen ?
                     <>
@@ -20,6 +24,14 @@ function Comments(props) {
                                 <p className="commenttext">{comment.message}</p>
                             </div>
                         ))}
+                        {props.isAuthenticated &&
+                            <div className="addCommentWrapper">
+                                <Badge onClick={()=>setCommentModalOpen(true)} color="blue">
+                                    <p className="badgeText">Add Comment</p>
+                                </Badge>
+                            </div>
+                        }
+                        
                         <a onClick={toggleOpen} className="toggleText">Click to collapse</a>
                     </>
                     :

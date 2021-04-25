@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { postTweet, patchTweet } from '../actions/tweetActions';
+import { postComment } from '../actions/tweetActions';
 import ReactModal from 'react-modal';
 import Button from './Button';
 import Input from './Input';
@@ -17,25 +17,15 @@ const customStyles = {
   }
 };
 
-function TweetModal(props) {
-    const [tweetMessage, setTweetMessage] = useState('');
-    useEffect(()=>{
-        if (props.edit) {
-            setTweetMessage(props.tweet.message);
-        }
-    }, []);
-
+function CommentModal(props) {
+    const [commentMessage, setCommentMessage] = useState('');
     const onClose = () => {
-        setTweetMessage('');
+        setCommentMessage('');
         props.setOpen(false);
     };
     const onSubmit = (e) => {
         e.preventDefault();
-        if(props.edit) {
-            props.patchTweet(props.tweet._id, { message: tweetMessage });
-        } else {
-            props.postTweet({ username: props.username, message: tweetMessage, userid: props.userid });
-        }
+        props.postComment(props.tweetId, { username: props.username, message: commentMessage });
         onClose();
     };
     return (
@@ -45,8 +35,8 @@ function TweetModal(props) {
            style={customStyles}
         >
             <div className="modalWrapper">
-                <h3 className="modalHeader">{props.edit ? 'Edit Your Tweet' : 'Enter your Tweet'}</h3>
-                <Input id="Message" type="textarea" value={tweetMessage} setValue={setTweetMessage} placeholder="Message" />
+                <h3 className="modalHeader">Enter your Comment</h3>
+                <Input id="Message" type="textarea" value={commentMessage} setValue={setCommentMessage} placeholder="Message" />
                 <Button onClick={onSubmit}>Submit</Button>
             </div>
         </ReactModal>
@@ -60,8 +50,7 @@ const mapStateToProps = (curState) => ({
 });
 
 const mapDispatchToProps = {
-    postTweet,
-    patchTweet,
+    postComment,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TweetModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentModal);

@@ -5,67 +5,74 @@ import TopBar from './TopBar';
 import SignInBox from './SignInBox';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { addUser } from '../actions/userActions';
+import { checkForUserCookie, logout } from '../actions/userActions';
 import logo from '../kiwi.svg';
 import Button from './Button';
 import TweetModal from './TweetModal';
 import icon from '../icon.png';
 import Badge from './Badge';
+
 const MainPage = (props) => {
     useEffect(()=>{
-        axios.get('api/users/checkcookie')
-        .then(res => {
-            props.addUser({ username: res.data.username, id:res.data.id });
-        }).catch((err) => {
-            console.log("No saved cookie");
-        });
+        props.checkForUserCookie()
     }, []);
 
     const [isTweetPosterModalOpen, setTweetPosterModalOpen] = useState(false);
 
+    const doLogout = () => {
+        props.logout();
+    };
+
     return (
         <div>
-            {props.isAuthenticated &&
-                <>
-                    <h1>Welcome {props.username}</h1>
-                    <div>
-                        <TweetPoster />
-                    </div>
-                </>
-            }
             <TweetModal isOpen={isTweetPosterModalOpen} setOpen={setTweetPosterModalOpen} />
             <div className="Container">
-                <div className="leftbar">
-                    <div className="leftbarinner">
-                        <div className="logoWrapper">
-                            <div className="logoinner">
-                                <img src={logo} className="logo" />
-                            </div>
-                        </div>
-                        <div className="profileContainer">
-                            <div className="tweetButtonWrapper">
-                                <Button onClick={()=>setTweetPosterModalOpen(true)}>Tweet</Button>
-                            </div>
-                            <div className="profileWrapper">
-                                <div className="profileInnerWrapper">
-                                    <img src={icon} className="profilepic" />
+                <div className="left">
+                    <div className="leftbar">
+                        <div className="leftbarwrapper">
+                            <div className="leftbarinner">
+                                <div className="logoWrapper">
+                                    <div className="logoinner">
+                                        <img src={logo} className="logo" />
+                                    </div>
                                 </div>
-                                <div className="profileNameWrapper">
-                                    <p className="profileNameText">Connor Byers</p>
-                                </div>
-                                <Badge onClick={()=>console.log('clicked')} color="red">
-                                    <p className="badgeText">Logout</p>
-                                </Badge>
+                                {props.isAuthenticated &&
+                                    <div className="profileContainer">
+                                        <div className="tweetButtonWrapper">
+                                            <Button onClick={()=>setTweetPosterModalOpen(true)}>Tweet</Button>
+                                        </div>
+                                        <div className="profileWrapper">
+                                            <div className="profileInnerWrapper">
+                                                <img src={icon} className="profilepic" />
+                                            </div>
+                                            <div className="profileNameWrapper">
+                                                <p className="profileNameText">{props.username}</p>
+                                            </div>
+                                            <div className="addCommentWrapper">
+                                                <Badge onClick={doLogout} color="red">
+                                                    <p className="badgeText">Logout</p>
+                                                </Badge>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="tweetFeedWrapper">
-                    <TweetFeed /> 
-                </div>  
-                <div className="rightbar">
-                    <SignInBox />
+                <div className="right">
+                    <div className="rightinner">
+                        <div className="tweetFeedWrapper">
+                            <TweetFeed /> 
+                        </div>
+                        {!props.isAuthenticated && 
+                            <div className="rightbar">
+                                <SignInBox />
+                            </div>
+                        } 
+                    </div>
                 </div>
+                 
             </div>
             
         </div>
@@ -78,7 +85,8 @@ const mapStateToProps = (curState)=>({
 });
 
 const mapDispatchToProps = {
-    addUser,
+    checkForUserCookie,
+    logout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

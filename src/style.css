@@ -10,23 +10,11 @@ html, body {
 
 .tweetFeedWrapper {
     flex-grow: 1;
-    margin: 0 auto;
     padding: 0;
     border-top-style: solid;
     border-top-color: rgb(235, 238, 240);
     border-top-width: 1px;
-}
-
-@media screen and (max-width: 1500px) {
-    .tweetFeedWrapper {
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 1000px) {
-    .tweetFeedWrapper {
-        width: 60%;
-    }
+    max-width: 600px;
 }
 
 .tweetWrapper {
@@ -161,23 +149,31 @@ textarea.InputStyle {
 }
 
 .leftbar {
-    flex-grow: 0;
+    width: 275px;
     margin: 0;
     display: flex;
     flex-direction: column;
-    width: 300px;
+}
+
+.leftbarwrapper {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column
 }
 
 .leftbarinner {
-    position: fixed;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 275px;
 }
 
 .rightbar {
-    flex-grow: 0;
+    flex-grow: 1;
     margin: 0;
     margin-left: 1rem;
     display: flex;
@@ -186,10 +182,34 @@ textarea.InputStyle {
 }
 
 .Container {
-    margin: auto;
-    width: 50%;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
+    align-content: stretch;
+}
+
+.left {
+    display: flex;
+    margin: 0;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+
+.right {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.rightinner {
+    width: 990px;
+    margin: 0;
+    display: flex;
 }
 
 .SignInBoxWrapper {
@@ -205,12 +225,6 @@ textarea.InputStyle {
 
 .SignInBoxWrapper:hover {
     background-color: rgb(238, 240, 241);
-}
-
-@media screen and (max-width: 1500px) {
-    .rightbar {
-        display: none;
-    }
 }
 
 .linkWrapper {
@@ -299,9 +313,9 @@ textarea.InputStyle {
     padding: 0;
     display: flex;
     flex-direction: row;
-    margin-left: 1rem;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .profileNameWrapper {
@@ -337,9 +351,16 @@ textarea.InputStyle {
     text-align: center;
     height: 1.5rem;
     border-radius: 5px;
+    display: inline-block;
+}
+
+.badgeTextWrapper {
     display: flex;
+    margin: 0;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .badgeWrapper:hover {
@@ -349,6 +370,12 @@ textarea.InputStyle {
 .badgeText {
     margin: 0 0.5rem;
     color: white;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 .red {
@@ -365,4 +392,9 @@ textarea.InputStyle {
 
 .blue:hover {
     background-color: #1b95e0;
+}
+
+.addCommentWrapper {
+    margin: 0;
+    float: right;
 }

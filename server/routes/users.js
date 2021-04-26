@@ -5,6 +5,11 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const middleware = require('../middleware/middleware');
 const {jwtSecret} = require('../secrets');
+const multer = require('multer');
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+const { uploadImage } = require('../aws');
+
 router.post('/',(req,res)=>{
     const posUser = req.body;
 
@@ -83,6 +88,10 @@ router.post('/auth', (req,res)=>{
 router.get('/checkcookie',middleware,(req,res)=>{
     console.log("got to check cookie");
     res.json({username: req.username, id: req.userid});
+});
+
+router.post('/profilepic',upload.single('avatar'), async (req,res)=>{
+    return uploadImage(req.file, res);
 });
 
 module.exports = router;

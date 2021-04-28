@@ -10,19 +10,21 @@ aws.config.update({
 });
 
 
-const uploadImage = async (file, res) => {
+const uploadImage = async (file, folder) => {
     const s3Bucket = new aws.S3({ params: { Bucket: BUCKET_NAME } })
     const file_ext = file.originalname.split('.').pop();
     const params = {
       Body: file.buffer,
-      Key: `avatar/${uuid.v4()}.${file_ext}`,
+      Key: `${folder}/${uuid.v4()}.${file_ext}`,
     };
     let location = '';
-    await s3Bucket.upload(params, (err, data) => {
-        if (err) {
-            throw err;
-        }
-        res.json({link: data.Location});
+    console.log('a')
+    const uploadPromise = s3Bucket.upload(params).promise();
+    console.log('b')
+    return uploadPromise.then((data) => {
+        return { url: data.Location, success: true };
+    }).catch((err) => {
+        return { success: false };
     });
 };
 

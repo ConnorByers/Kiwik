@@ -5,10 +5,20 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const middleware = require('../middleware/middleware');
 const {jwtSecret} = require('../secrets');
-const multer = require('multer');
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
 const { uploadImage } = require('../aws');
+const multer = require('multer');
+
+const fileFilter = (req, file, cb) => {
+    if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+const storage = multer.memoryStorage()
+const upload = multer({ storage, fileFilter });
+
+
 
 router.post('/',(req,res)=>{
     const posUser = req.body;
@@ -64,34 +74,51 @@ router.post('/auth', (req,res)=>{
         }
         else{
             foundUser.checkPasswordMatch(password,foundUser.password,(success)=>{
-                /*if(!success){
-                    res.status(401).json({msg: "Email or Password Incorrect", success: false}); 
-                }
-                else if(err){
-                    res.status(500).json({msg: "Internal server error. Please try again", success: false});
-                }*/
                 if(!success){
                     res.json({msg: "Email or Password Incorrect"});
                 }
                 else{
-                    const jwtData = { id: foundUser._id, username: foundUser.username };
+                    const jwtData = { id: foundUser._id };
                     const jwtToken = jwt.sign(jwtData,jwtSecret,{
                         expiresIn: '1h'
                     });
                     res.cookie('token',jwtToken,{httpOnly:true});
-                    res.json({success: true, username: foundUser.username, id: foundUser._id});
+                    res.json({success: true, username: foundUser.username, id: foundUser._id,  profilepic: foundUser.profilepic});
                 }  
             });
         }
     });
 });
-router.get('/checkcookie',middleware,(req,res)=>{
+
+router.get('/checkcookie', middleware, (req,res)=>{
     console.log("got to check cookie");
-    res.json({username: req.username, id: req.userid});
+    User.findOne({_id: req.userid},(err,foundUser)=>{
+        if(err){
+            console.log(err);
+            res.json({msg: "Internal server error. Please try again", success: false});
+        }
+        else if(!foundUser){
+            res.json({msg: "No user found corresponding to user id", success: false});
+        }
+        else{
+            res.json({success: true, username: foundUser.username, id: foundUser._id,  profilepic: foundUser.profilepic});
+        }
+    });
 });
 
-router.post('/profilepic',upload.single('avatar'), async (req,res)=>{
-    return uploadImage(req.file, res);
+router.post('/profilepic', middleware, upload.single('avatar'), async (req,res)=>{
+    if(!req.file) {
+        res.status(400).json({ message: 'No valid file uploaded', success: false });
+    }
+    const s3UploadRet = await uploadImage(req.file, 'avatar');
+    const changes = {
+        profilepic: s3UploadRet['url'],
+    }
+    User.findByIdAndUpdate(req.body.userId, changes, { new: true }).then((updatedUser)=>res.json(updatedUser))
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({success: false});
+    });
 });
 
 module.exports = router;

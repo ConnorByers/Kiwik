@@ -11,7 +11,18 @@ export const getTweets = () => dispatch => {
 };
 
 export const postTweet = (tweet) => dispatch => {
-    axios.post('/api/tweets',tweet)
+    const formData = new FormData();
+    if (tweet.picture) {
+        formData.append("picture", tweet.picture);
+    }
+    formData.append("userId", tweet.userId);
+    formData.append("message", tweet.message);
+    formData.append("username", tweet.username);
+    axios.post('/api/tweets', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
     .then(res=>dispatch({
         type: POST_TWEET,
         data: res.data
@@ -35,7 +46,16 @@ export const deleteTweet = (id) => dispatch => {
 };
 
 export const patchTweet = (id, tweetUpdates) => dispatch => {
-    axios.patch(`/api/tweets/${id}`, tweetUpdates)
+    const formData = new FormData();
+    if (tweetUpdates.picture) {
+        formData.append("picture", tweetUpdates.picture);
+    }
+    formData.append("message", tweetUpdates.message);
+    axios.patch(`/api/tweets/${id}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
     .then(res=>dispatch({
         type: PATCH_TWEET,
         data: res.data

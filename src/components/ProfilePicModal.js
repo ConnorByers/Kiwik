@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { postTweet, patchTweet } from '../actions/tweetActions';
+import { uploadProfilePicture } from '../actions/userActions';
 import ReactModal from 'react-modal';
 import Button from './Button';
 import Input from './Input';
@@ -17,37 +17,27 @@ const customStyles = {
   }
 };
 
-function TweetModal(props) {
-    const [tweetMessage, setTweetMessage] = useState('');
-    const [picture, setPicture] = useState(undefined);
+function ProfilePicModal(props) {
+    const [picture, setPicture] = useState('');
+    const [noFileSelectedFlag, setNoFileSelectedFlag] = useState(false);
     const [invalidFileTypeFlag, setInvalidFileTypeFlag] = useState(false);
-
-    useEffect(()=>{
-        if (props.edit) {
-            setTweetMessage(props.tweet.message);
-        }
-    }, []);
-
     const onClose = () => {
-        setTweetMessage('');
-        setPicture(undefined);
+        setPicture('');
         props.setOpen(false);
     };
     const onSubmit = (e) => {
         e.preventDefault();
-        if (picture) {
-            const file_ext = picture.name.split('.').pop();
-            if (!['jpg', 'jpeg', 'png'].includes(file_ext)){
-                setInvalidFileTypeFlag(true);
-                setPicture('');
-                return;
-            }
+        if (!picture){
+            setNoFileSelectedFlag(true);
+            return;
         }
-        if(props.edit) {
-            props.patchTweet(props.tweet._id, { message: tweetMessage, picture });
-        } else {
-            props.postTweet({ username: props.username, message: tweetMessage, userid: props.userid, picture });
+        const file_ext = picture.name.split('.').pop();
+        if (!['jpg', 'jpeg', 'png'].includes(file_ext)){
+            setInvalidFileTypeFlag(true);
+            setPicture('');
+            return;
         }
+        props.uploadProfilePicture(picture, props.userid);
         onClose();
     };
     return (
@@ -57,11 +47,13 @@ function TweetModal(props) {
            style={customStyles}
         >
             <div className="modalWrapper">
-                <h3 className="modalHeader">{props.edit ? 'Edit Your Tweet' : 'Enter your Tweet'}</h3>
-                <Input id="Message" type="textarea" value={tweetMessage} setValue={setTweetMessage} placeholder="Message" />
+                <h3 className="modalHeader">Upload your picture</h3>
                 <Button setFile={setPicture} setErrorFlag={setInvalidFileTypeFlag} file>Select File</Button>
                 {picture &&
                     <p>Selected: {picture.name}</p>
+                }
+                {noFileSelectedFlag &&
+                    <p className="errortext">File Must Be Selected</p>
                 }
                 {invalidFileTypeFlag &&
                     <p className="errortext">File must be a .jpg, .jpeg or .png</p>
@@ -73,14 +65,11 @@ function TweetModal(props) {
 }
 
 const mapStateToProps = (curState) => ({
-    username: curState.tweet.username,
-    isAuthenticated: curState.tweet.isAuthenticated,
     userid: curState.tweet.userid
 });
 
 const mapDispatchToProps = {
-    postTweet,
-    patchTweet,
+    uploadProfilePicture,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TweetModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePicModal);

@@ -47,6 +47,12 @@ html, body {
     height: 48px;
 }
 
+.tweetPicture {
+    object-fit: contain;
+    max-width: 400px;
+    max-height: 400px;
+}
+
 .tweetContentWrapper {
     flex-grow: 1;
 }
@@ -212,6 +218,12 @@ textarea.InputStyle {
     display: flex;
 }
 
+@media only screen and (max-width: 1200px) {
+  .rightinner {
+      width: 500px;
+  }
+}
+
 .SignInBoxWrapper {
     margin-top: 1em;
     border-style: solid;
@@ -306,6 +318,7 @@ textarea.InputStyle {
 
 .tweetButtonWrapper {
     margin: 1rem 0;
+    margin-bottom: 0;
 }
 
 .profileWrapper {
@@ -319,6 +332,7 @@ textarea.InputStyle {
 }
 
 .profileNameWrapper {
+    margin: 0;
     margin-left: 0.5rem;
 }
 
@@ -367,15 +381,21 @@ textarea.InputStyle {
     cursor: pointer;
 }
 
+.badgeWrapperInner {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 49%;
+    transform: translateY(-50%);
+}
+
 .badgeText {
-    margin: 0 0.5rem;
+    margin: 0;
     color: white;
     text-align: center;
-    position: relative;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 .red {
@@ -397,4 +417,14 @@ textarea.InputStyle {
 .addCommentWrapper {
     margin: 0;
     float: right;
+}
+
+.accountBadgeWrapper {
+    margin: 0;
+    float: right;
+    margin-top: 1rem;
+}
+
+.errortext {
+    color: red;
 }

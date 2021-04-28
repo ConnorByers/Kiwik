@@ -7,6 +7,7 @@ import { checkForUserCookie, logout } from '../actions/userActions';
 import logo from '../kiwi.svg';
 import Button from './Button';
 import TweetModal from './TweetModal';
+import ProfilePicModal from './ProfilePicModal';
 import icon from '../icon.png';
 import Badge from './Badge';
 
@@ -16,7 +17,7 @@ const MainPage = (props) => {
     }, []);
 
     const [isTweetPosterModalOpen, setTweetPosterModalOpen] = useState(false);
-
+    const [isUploadProfilePicModalOpen, setUploadProfilePicOpen] = useState(false);
     const doLogout = () => {
         props.logout();
     };
@@ -24,6 +25,7 @@ const MainPage = (props) => {
     return (
         <div>
             <TweetModal isOpen={isTweetPosterModalOpen} setOpen={setTweetPosterModalOpen} />
+            <ProfilePicModal isOpen={isUploadProfilePicModalOpen} setOpen={setUploadProfilePicOpen} />
             <div className="Container">
                 <div className="left">
                     <div className="leftbar">
@@ -41,12 +43,15 @@ const MainPage = (props) => {
                                         </div>
                                         <div className="profileWrapper">
                                             <div className="profileInnerWrapper">
-                                                <img src={icon} className="profilepic" />
+                                                <img src={props.profilePicUrl || icon} className="profilepic" />
                                             </div>
                                             <div className="profileNameWrapper">
                                                 <p className="profileNameText">{props.username}</p>
                                             </div>
-                                            <div className="addCommentWrapper">
+                                            <div className="accountBadgeWrapper">
+                                                <Badge onClick={()=>setUploadProfilePicOpen(true)} color="blue">
+                                                    <p className="badgeText">Change Profile Picture</p>
+                                                </Badge>
                                                 <Badge onClick={doLogout} color="red">
                                                     <p className="badgeText">Logout</p>
                                                 </Badge>
@@ -79,7 +84,8 @@ const MainPage = (props) => {
 
 const mapStateToProps = (curState)=>({
     username: curState.tweet.username,
-    isAuthenticated: curState.tweet.isAuthenticated
+    isAuthenticated: curState.tweet.isAuthenticated,
+    profilePicUrl: curState.tweet.profilePicUrl,
 });
 
 const mapDispatchToProps = {

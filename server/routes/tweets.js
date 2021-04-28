@@ -2,6 +2,21 @@ const express = require('express');
 const router = express.Router();
 const AuthMiddleware = require('../middleware/middleware');
 const { Tweet, Comment} = require('../models/Tweet');
+const { uploadImage } = require('../aws');
+const multer = require('multer');
+
+const fileFilter = (req, file, cb) => {
+    console.log('in file FIlter')
+    console.log('*****************************************************************************')
+    if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        console.log('cb false -------------------------------')
+        cb(null, false);
+    }
+};
+const storage = multer.memoryStorage()
+const upload = multer({ storage, fileFilter });
 
 router.get('/',(req,res)=>{
     Tweet.find().sort({date:-1})
@@ -10,25 +25,30 @@ router.get('/',(req,res)=>{
     });
 });
 
-router.post('/',AuthMiddleware,(req,res)=>{
-    console.log(req.body.imageURL);
-    console.log(req.body.username);
+router.post('/',AuthMiddleware, upload.single('picture'), async (req,res)=>{
+    let imageURL = '';
+    if (req.file) {
+        const s3UploadRet = await uploadImage(req.file, 'picture');
+        imageURL = s3UploadRet['url'];
+    }
     const newTweet = new Tweet({
         username: req.body.username,
         message: req.body.message,
         date: req.body.date,
         userid: req.userid,
-        //likes: req.body.likes,
         comments: [],
-        imageURL: req.body.imageURL
+        imageURL: imageURL
     });
     newTweet.save().then(tweet=>res.json(tweet));
 });
 
-router.patch('/:id',AuthMiddleware,(req,res)=>{
+router.patch('/:id',AuthMiddleware, upload.single('picture'), async (req,res)=>{
     const changes = {
         message: req.body.message,
-        date: req.body.date,
+    }
+    if (req.file) {
+        const s3UploadRet = await uploadImage(req.file, 'picture');
+        changes['imageURL'] = s3UploadRet['url'];
     }
     Tweet.findByIdAndUpdate(req.params.id, changes, { new: true }).then((updatedPost)=>res.json(updatedPost))
     .catch(err=>{

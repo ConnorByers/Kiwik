@@ -1,10 +1,11 @@
-import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER, PATCH_TWEET } from '../actions/types';
+import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER, PATCH_TWEET, CHANGE_PROFILE_PICTURE } from '../actions/types';
 
 const initState = {
     tweets: [],
     username:'',
     isAuthenticated: false,
-    userid:''
+    userid:'',
+    profilePicUrl: '',
 }
 
 export default function(state=initState,action){
@@ -35,21 +36,29 @@ export default function(state=initState,action){
                 ...state,
                 username: action.data.username,
                 userid: action.data.id,
-                isAuthenticated: true
+                isAuthenticated: true,
+                profilePicUrl: action.data.profilepic || '',
             }
         case LOGOUT:
-            return{
+            return {
                 ...state,
                 username: null,
                 userid: null,
-                isAuthenticated: false
+                isAuthenticated: false,
+                profilePicUrl: '',
             }
         case ADD_USER:
-            return{
+            return {
                 ...state,
                 username: action.data.username,
                 userid: action.data.id,
-                isAuthenticated: true
+                isAuthenticated: true,
+                profilePicUrl: action.data.profilepic || '',
+            }
+        case CHANGE_PROFILE_PICTURE:
+            return {
+                ...state,
+                profilePicUrl: action.data.url
             }
         default:
             return state;

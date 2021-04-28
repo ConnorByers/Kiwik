@@ -16,7 +16,9 @@ export default function Badge(props) {
                 </div>
             :
                 <div className={`badgeWrapper ${props.color}`} onClick={props.onClick}>
-                    {props.children}
+                    <div className="badgeWrapperInner">
+                        {props.children}
+                    </div>
                 </div>
             }
         </>

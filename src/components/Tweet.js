@@ -32,6 +32,7 @@ function Tweet(props) {
                     </div>
                     <div className="messageWrapper">
                         <p className="messageText">{props.tweet.message}</p>
+                        {props.tweet.imageURL && <img className="tweetPicture" src={props.tweet.imageURL} />}
                     </div>
                     <Comments tweet={props.tweet} />
                 </div>

@@ -120,4 +120,9 @@ router.post('/profilepic', middleware, upload.single('avatar'), async (req,res)=
     });
 });
 
+router.post('/logout', (req,res)=>{
+    res.clearCookie('token');
+    res.json({success: true});
+});
+
 module.exports = router;

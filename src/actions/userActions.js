@@ -10,9 +10,16 @@ export const addSuccessLogin = (user) => {
 }
 
 export const logout = () => {
-    return {
-        type: LOGOUT
-    };
+    return (dispatch) => {
+        axios.post('api/users/logout').then(res=>{
+            dispatch( {
+                type: LOGOUT
+            });
+        }).catch((err)=>{
+            console.log(err);
+            alert('Failed To Logout')
+        });
+    }
 }
 
 export const addUser = (user) =>{
@@ -33,7 +40,6 @@ export const checkForUserCookie = (user) => {
     return (dispatch, getState) => {
         axios.get('api/users/checkcookie')
             .then(res => {
-                console.log(res);
                 dispatch(addUser({ username: res.data.username, id: res.data.id, profilepic: res.data.profilepic }));
             }).catch((err) => {
                 console.log("No saved cookie");

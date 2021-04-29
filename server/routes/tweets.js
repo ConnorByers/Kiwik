@@ -28,6 +28,7 @@ router.get('/', (req,res)=>{
                     date: tweet.date,
                     imageURL: tweet.imageURL,
                     likes: tweet.likes,
+                    username: tweet.username,
                     message: tweet.message,
                     userid: tweet.userid,
                     _id: tweet._id,
@@ -46,6 +47,7 @@ router.get('/', (req,res)=>{
                             imageURL: tweet.imageURL,
                             likes: tweet.likes,
                             message: tweet.message,
+                            username: tweet.username,
                             userid: tweet.userid,
                             _id: tweet._id,
                             tweetprofilepic: userProfileImages[tweet.userid]
@@ -87,8 +89,15 @@ router.post('/',AuthMiddleware, upload.single('picture'), async (req,res)=>{
             }
             else {
                 const tweetWithProfilePic = {
-                    ...tweet,
-                   tweetprofilepic: foundUser.profilepic || '' 
+                    comments: tweet.comments,
+                    date: tweet.date,
+                    imageURL: tweet.imageURL,
+                    likes: tweet.likes,
+                    message: tweet.message,
+                    username: tweet.username,
+                    userid: tweet.userid,
+                    _id: tweet._id,
+                    tweetprofilepic: foundUser.profilepic || '' 
                 }
                 res.json(tweetWithProfilePic);
             }

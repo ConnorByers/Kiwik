@@ -12,7 +12,7 @@ function Comments(props) {
     return (
         <div className="commentSectionWrapper">
             <CommentModal setOpen={setCommentModalOpen} isOpen={isCommentModalOpen} tweetId={props.tweet._id} />
-            {props.tweet.comments.length > 0 &&
+            {props.tweet.comments && props.tweet.comments.length > 0 &&
             <>
                 <div className="commentsWrapper">
                 {isOpen ?

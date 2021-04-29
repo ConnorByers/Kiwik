@@ -10,10 +10,10 @@ function Comments(props) {
     };
     const [isCommentModalOpen, setCommentModalOpen] = useState(false);
     return (
-        <>
+        <div className="commentSectionWrapper">
+            <CommentModal setOpen={setCommentModalOpen} isOpen={isCommentModalOpen} tweetId={props.tweet._id} />
             {props.tweet.comments.length > 0 &&
             <>
-                <CommentModal setOpen={setCommentModalOpen} isOpen={isCommentModalOpen} tweetId={props.tweet._id} />
                 <div className="commentsWrapper">
                 {isOpen ?
                     <>
@@ -24,13 +24,6 @@ function Comments(props) {
                                 <p className="commenttext">{comment.message}</p>
                             </div>
                         ))}
-                        {props.isAuthenticated &&
-                            <div className="addCommentWrapper">
-                                <Badge onClick={()=>setCommentModalOpen(true)} color="blue">
-                                    <p className="badgeText">Add Comment</p>
-                                </Badge>
-                            </div>
-                        }
                         
                         <a onClick={toggleOpen} className="toggleText">Click to collapse</a>
                     </>
@@ -42,7 +35,14 @@ function Comments(props) {
                 </div>
             </>
             }
-        </>
+            {props.isAuthenticated &&
+                <div className="addCommentWrapper">
+                    <Badge onClick={()=>setCommentModalOpen(true)} color="blue">
+                        <p className="badgeText">Add Comment</p>
+                    </Badge>
+                </div>
+            }
+        </div>
     )
 }
 

@@ -185,6 +185,13 @@ textarea.InputStyle {
     display: flex;
     flex-direction: column;
     position: sticky;
+    top: 0;
+    align-self: flex-start
+}
+
+.commentSectionWrapper {
+    margin: 0;
+    margin-top: 1rem;
 }
 
 .Container {
@@ -295,6 +302,19 @@ textarea.InputStyle {
 .modalWrapper {
     margin: auto;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tweetModalInner {
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .profileContainer {
@@ -412,6 +432,15 @@ textarea.InputStyle {
 
 .blue:hover {
     background-color: #1b95e0;
+}
+
+.lightblue {
+    background-color: #3fd7fc;
+    border-color: #3ac6e8;
+}
+
+.lightblue:hover {
+    background-color: #3ac6e8;
 }
 
 .addCommentWrapper {

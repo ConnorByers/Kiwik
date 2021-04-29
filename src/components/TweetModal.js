@@ -26,7 +26,7 @@ function TweetModal(props) {
         if (props.edit) {
             setTweetMessage(props.tweet.message);
         }
-    }, []);
+    }, [props.isOpen]);
 
     const onClose = () => {
         setTweetMessage('');
@@ -59,14 +59,17 @@ function TweetModal(props) {
             <div className="modalWrapper">
                 <h3 className="modalHeader">{props.edit ? 'Edit Your Tweet' : 'Enter your Tweet'}</h3>
                 <Input id="Message" type="textarea" value={tweetMessage} setValue={setTweetMessage} placeholder="Message" />
-                <Button setFile={setPicture} setErrorFlag={setInvalidFileTypeFlag} file>Select File</Button>
-                {picture &&
-                    <p>Selected: {picture.name}</p>
-                }
-                {invalidFileTypeFlag &&
-                    <p className="errortext">File must be a .jpg, .jpeg or .png</p>
-                }
-                <Button onClick={onSubmit}>Submit</Button>
+                <div className="tweetModalInner">
+                    <Button setFile={setPicture} setErrorFlag={setInvalidFileTypeFlag} color="lightblue" file>Select File</Button>
+                    {picture &&
+                        <p>Selected: {picture.name}</p>
+                    }
+                    {invalidFileTypeFlag &&
+                        <p className="errortext">File must be a .jpg, .jpeg or .png</p>
+                    }
+                    <Button onClick={onSubmit}>Submit</Button>
+                </div>
+                
             </div>
         </ReactModal>
     )

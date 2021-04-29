@@ -21,7 +21,7 @@ function Tweet(props) {
                 <TweetModal edit isOpen={editTweetModalOpen} setOpen={setEditTweetModalOpen} tweet={props.tweet} />
                 <div className="profilePictureWrapper">
                     <div className="innerProfilePictureWrapper">
-                        <img src={icon} className="profilePicture" />
+                        <img src={props.tweet.tweetprofilepic || icon} className="profilePicture" />
                     </div>
                 </div>
                 <div className="tweetContentWrapper">

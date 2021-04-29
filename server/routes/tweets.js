@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 const AuthMiddleware = require('../middleware/middleware');
 const { Tweet, Comment} = require('../models/Tweet');
+const User = require('../models/User');
 const { uploadImage } = require('../aws');
 const multer = require('multer');
 
 const fileFilter = (req, file, cb) => {
-    console.log('in file FIlter')
-    console.log('*****************************************************************************')
     if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
         cb(null, true);
     } else {
@@ -18,10 +17,48 @@ const fileFilter = (req, file, cb) => {
 const storage = multer.memoryStorage()
 const upload = multer({ storage, fileFilter });
 
-router.get('/',(req,res)=>{
+router.get('/', (req,res)=>{
     Tweet.find().sort({date:-1})
-    .then(items=>{
-        res.json(items);
+    .then((items)=>{
+        const userProfileImages = {};
+        const tweetsWithProfilePromises = items.map(async (tweet)=>{
+            if (tweet.userid in userProfileImages) {
+                return {
+                    comments: tweet.comments,
+                    date: tweet.date,
+                    imageURL: tweet.imageURL,
+                    likes: tweet.likes,
+                    message: tweet.message,
+                    userid: tweet.userid,
+                    _id: tweet._id,
+                    tweetprofilepic: userProfileImages[tweet.userid]
+                }
+            } else {
+                try {
+                    const foundUser = await User.findOne({_id: tweet.userid});
+                    if (!foundUser) {
+                        res.json({msg: "No user found corresponding to user id", success: false});
+                    } else {
+                        userProfileImages[tweet.userid] = foundUser.profilepic || '';
+                        return {
+                            comments: tweet.comments,
+                            date: tweet.date,
+                            imageURL: tweet.imageURL,
+                            likes: tweet.likes,
+                            message: tweet.message,
+                            userid: tweet.userid,
+                            _id: tweet._id,
+                            tweetprofilepic: userProfileImages[tweet.userid]
+                        };
+                    }
+                } catch {
+                    res.json({msg: "Error getting User from id", success: false});
+                }
+            }
+        });
+        Promise.all(tweetsWithProfilePromises).then((tweetsWithProfile)=>{
+            res.json(tweetsWithProfile);
+        });
     });
 });
 
@@ -39,7 +76,24 @@ router.post('/',AuthMiddleware, upload.single('picture'), async (req,res)=>{
         comments: [],
         imageURL: imageURL
     });
-    newTweet.save().then(tweet=>res.json(tweet));
+    newTweet.save().then(tweet=>{
+        User.findOne({_id: tweet.userid},(err,foundUser)=>{
+            if(err){
+                console.log(err);
+                res.json({msg: "Internal server error. Please try again", success: false});
+            }
+            else if(!foundUser){
+                res.json({msg: "No user found corresponding to user id", success: false});
+            }
+            else {
+                const tweetWithProfilePic = {
+                    ...tweet,
+                   tweetprofilepic: foundUser.profilepic || '' 
+                }
+                res.json(tweetWithProfilePic);
+            }
+        });
+    });
 });
 
 router.patch('/:id',AuthMiddleware, upload.single('picture'), async (req,res)=>{

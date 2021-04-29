@@ -18,8 +18,6 @@ const fileFilter = (req, file, cb) => {
 const storage = multer.memoryStorage()
 const upload = multer({ storage, fileFilter });
 
-
-
 router.post('/',(req,res)=>{
     const posUser = req.body;
 
@@ -59,6 +57,7 @@ router.post('/',(req,res)=>{
         });
     })
 });
+
 router.post('/auth', (req,res)=>{
     const { email, password } = req.body;
     if(!email||!password){

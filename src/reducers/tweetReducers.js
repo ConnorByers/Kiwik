@@ -24,7 +24,7 @@ export default function(state=initState,action){
         case PATCH_TWEET:
             return {
                 ...state,
-                tweets: state.tweets.map(tweet=>tweet._id === action.data._id ? action.data : tweet)
+                tweets: state.tweets.map(tweet=>tweet._id === action.data._id ? { ...tweet, ...action.data } : tweet)
             }
         case DELETE_TWEET:
             return {
@@ -58,7 +58,8 @@ export default function(state=initState,action){
         case CHANGE_PROFILE_PICTURE:
             return {
                 ...state,
-                profilePicUrl: action.data.url
+                profilePicUrl: action.data.url,
+                tweets: state.tweets.map(tweet=>tweet.userid === action.data.userId ? { ...tweet, tweetprofilepic: action.data.url } : tweet)
             }
         default:
             return state;

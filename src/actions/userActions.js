@@ -22,10 +22,10 @@ export const addUser = (user) =>{
     }
 }
 
-export const changeProfilePicture = (url) => {
+export const changeProfilePicture = (url, userId) => {
     return {
         type: CHANGE_PROFILE_PICTURE,
-        data: { url }
+        data: { url, userId }
     }
 };
 
@@ -94,7 +94,7 @@ export const uploadProfilePicture = (picture, userId) => {
             }
         }).then(res=>{
             console.log(res);
-            dispatch(changeProfilePicture(res.data.profilepic));
+            dispatch(changeProfilePicture(res.data.profilepic, userId));
         }).catch((e)=>{
             console.log(e);
         });

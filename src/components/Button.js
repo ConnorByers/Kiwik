@@ -23,7 +23,7 @@ export default function Button(props) {
 
     return (
         <>
-            <a className="button" onClick={file ? handleClick : onClick}>
+            <a className={`button ${props.color}`} onClick={file ? handleClick : onClick}>
                 {children} 
             </a>
             {file &&

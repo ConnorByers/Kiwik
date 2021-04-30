@@ -65,6 +65,35 @@ const MainPage = (props) => {
                 </div>
                 <div className="right">
                     <div className="rightinner">
+                        <div className="smallScreenProfileOptionsWrapper">
+                            {props.isAuthenticated ?
+                                <div className="profileContainer">
+                                    <div className="profileWrapper">
+                                        <div className="iconusernamewrapper">
+                                            <div className="profileInnerWrapper">
+                                                <img src={props.profilePicUrl || icon} className="profilepic" />
+                                            </div>
+                                            <div className="profileNameWrapper">
+                                                <p className="profileNameText">{props.username}</p>
+                                            </div>
+                                        </div>
+                                        <div className="accountBadgeWrapper">
+                                            <Badge onClick={()=>setUploadProfilePicOpen(true)} color="blue">
+                                                <p className="badgeText">Change Profile Picture</p>
+                                            </Badge>
+                                            <Badge onClick={doLogout} color="red">
+                                                <p className="badgeText">Logout</p>
+                                            </Badge>
+                                        </div>
+                                    </div>
+                                    <div className="tweetButtonWrapper">
+                                        <Button onClick={()=>setTweetPosterModalOpen(true)}>Tweet</Button>
+                                    </div>
+                                </div>
+                                :
+                                <SignInBox />
+                            }
+                        </div>
                         <div className="tweetFeedWrapper">
                             <TweetFeed /> 
                         </div>

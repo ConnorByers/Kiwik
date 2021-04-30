@@ -220,15 +220,9 @@ textarea.InputStyle {
 }
 
 .rightinner {
-    width: 990px;
+    width: 75rem;
     margin: 0;
     display: flex;
-}
-
-@media only screen and (max-width: 1200px) {
-  .rightinner {
-      width: 500px;
-  }
 }
 
 .SignInBoxWrapper {
@@ -367,6 +361,7 @@ textarea.InputStyle {
     width: 2rem;
     height: 1.5rem;
     border-radius: 1rem;
+    margin-right: 0.5rem;
 }
 
 .badgeIconWrapper:hover {
@@ -381,7 +376,8 @@ textarea.InputStyle {
 
 .badgeWrapper {
     margin: 0;
-    margin-left: 1rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
     text-align: center;
     height: 1.5rem;
     border-radius: 5px;
@@ -456,4 +452,114 @@ textarea.InputStyle {
 
 .errortext {
     color: red;
+}
+.smallScreenProfileOptionsWrapper {
+    display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  .left {
+      display: none;
+  }
+  .rightinner {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+  }
+  .tweetFeedWrapper {
+      width: 65vw;
+      margin: 0;
+  }
+  .rightbar {
+      display: none;
+      flex-grow: 0;
+  }
+  .tweetPicture {
+    object-fit: contain;
+    max-width: 75%;
+    max-height: 75%;
+  }
+
+  .smallScreenProfileOptionsWrapper {
+    display: flex;
+    margin: 0;
+    margin-bottom: 1rem;
+    width: 65vw;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .SignInBoxWrapper {
+    display: block;
+    margin-top: 1em;
+    border-style: solid;
+    border-color: rgb(235, 238, 240);
+    border-width: 1px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    background-color: rgb(247, 249, 250);
+    }
+
+    .profileContainer {
+        margin: 0;
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .accountBadgeWrapper {
+        float: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+    }
+
+    .profileWrapper {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 30vh;
+    }
+
+    .iconusernamewrapper {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tweetButtonWrapper {
+        width: 30vh;
+    }
+
+    .badgeWrapper {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .tweetFeedWrapper {
+      width: 90%;
+  }
+
+  .tweetPicture {
+    max-width: 60vw;
+    max-height: 60vw;
+  }
+
+  .smallScreenProfileOptionsWrapper {
+      width: 90%;
+  }
+
 }

@@ -6,7 +6,7 @@ function SignInBox(props) {
     return (
         <>
             {!props.isAuthenticated &&
-                <div className="SignInBoxWrapper">
+                <div className={`SignInBoxWrapper${props.top ? 'Top' : ''}`}>
                     <h3>You Aren't Signed In!</h3>
                     <div className="modalline"></div>
                     <p>Register or Login to participate in the discussion</p>

@@ -14,7 +14,7 @@ html, body {
     border-top-style: solid;
     border-top-color: rgb(235, 238, 240);
     border-top-width: 1px;
-    max-width: 600px;
+    width: 33vw;
 }
 
 .tweetWrapper {
@@ -67,7 +67,7 @@ html, body {
 }
 
 .messageWrapper {
-
+    display: inline-block;
 }
 
 .messageText {
@@ -215,12 +215,10 @@ textarea.InputStyle {
     justify-content: flex-start;
     margin: 0;
     flex-direction: row;
-    flex-grow: 1;
-    flex-shrink: 1;
+    flex-grow: 2;
 }
 
 .rightinner {
-    width: 75rem;
     margin: 0;
     display: flex;
 }
@@ -233,11 +231,6 @@ textarea.InputStyle {
     width: 250px;
     border-radius: 5px;
     text-align: center;
-    background-color: rgb(247, 249, 250);
-}
-
-.SignInBoxWrapper:hover {
-    background-color: rgb(238, 240, 241);
 }
 
 .linkWrapper {
@@ -361,7 +354,6 @@ textarea.InputStyle {
     width: 2rem;
     height: 1.5rem;
     border-radius: 1rem;
-    margin-right: 0.5rem;
 }
 
 .badgeIconWrapper:hover {
@@ -382,6 +374,11 @@ textarea.InputStyle {
     height: 1.5rem;
     border-radius: 5px;
     display: inline-block;
+}
+
+.badgeIconWrapper {
+    display: flex;
+    width: 70px;
 }
 
 .badgeTextWrapper {
@@ -458,15 +455,22 @@ textarea.InputStyle {
 }
 
 @media only screen and (max-width: 1200px) {
-  .left {
-      display: none;
-  }
-  .rightinner {
+    .left {
+        display: none;
+    }
+
+    .right {
+        width: 100%;
+    }
+
+    .rightinner {
       width: 100%;
       justify-content: center;
-      align-items: center;
+      align-content: center;
       flex-direction: column;
-  }
+      align-items: center;
+    }
+
   .tweetFeedWrapper {
       width: 65vw;
       margin: 0;
@@ -539,7 +543,6 @@ textarea.InputStyle {
     }
 
     .tweetButtonWrapper {
-        width: 30vh;
     }
 
     .badgeWrapper {
@@ -550,7 +553,7 @@ textarea.InputStyle {
 
 @media only screen and (max-width: 600px) {
     .tweetFeedWrapper {
-      width: 90%;
+      width: 100%;
   }
 
   .tweetPicture {

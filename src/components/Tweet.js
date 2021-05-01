@@ -37,14 +37,14 @@ function Tweet(props) {
                     <Comments tweet={props.tweet} />
                 </div>
                 {(props.isAuthenticated && props.userid===props.tweet.userid) &&
-                    <>
+                    <div className="badgeIconWrapper">
                         <Badge leftoffset icon onClick={()=>setEditTweetModalOpen(true)}>
                             <FontAwesomeIcon icon={faEdit} />
                         </Badge>
                         <Badge icon onClick={deleteTweet}>
                             <FontAwesomeIcon icon={faTrashAlt}/>
                         </Badge>
-                    </>
+                    </div>
                 }
             </div>
         </>

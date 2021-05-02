@@ -59,7 +59,7 @@ html, body {
 }
 
 .usernameWrapper {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5em;
 }
 
 .usernameText {
@@ -72,7 +72,7 @@ html, body {
 }
 
 .messageText {
-
+    margin-top: 0.5em;
 }
 
 .commentsWrapper {

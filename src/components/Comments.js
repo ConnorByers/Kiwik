@@ -12,9 +12,7 @@ function Comments(props) {
     return (
         <div className="commentSectionWrapper">
             <CommentModal setOpen={setCommentModalOpen} isOpen={isCommentModalOpen} tweetId={props.tweet._id} />
-            {props.tweet.comments && props.tweet.comments.length > 0 &&
-            <>
-                <div className="commentsWrapper">
+            <div className="commentsWrapper">
                 {isOpen ?
                     <>
                         <div className="commentline"></div>
@@ -24,7 +22,13 @@ function Comments(props) {
                                 <p className="commenttext">{comment.message}</p>
                             </div>
                         ))}
-                        
+                        {props.isAuthenticated &&
+                            <div className="addCommentWrapper">
+                                <Badge onClick={()=>setCommentModalOpen(true)} color="blue">
+                                    <p className="badgeText">Add Comment</p>
+                                </Badge>
+                            </div>
+                        }
                         <a onClick={toggleOpen} className="toggleText">Click to collapse</a>
                     </>
                     :
@@ -32,16 +36,7 @@ function Comments(props) {
                         <a onClick={toggleOpen} className="toggleText">Click to view comments</a>
                     </>
                 }
-                </div>
-            </>
-            }
-            {props.isAuthenticated &&
-                <div className="addCommentWrapper">
-                    <Badge onClick={()=>setCommentModalOpen(true)} color="blue">
-                        <p className="badgeText">Add Comment</p>
-                    </Badge>
-                </div>
-            }
+            </div>
         </div>
     )
 }

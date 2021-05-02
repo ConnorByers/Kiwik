@@ -10,7 +10,7 @@ import TweetModal from './TweetModal';
 import ProfilePicModal from './ProfilePicModal';
 import icon from '../icon.png';
 import Badge from './Badge';
-
+import ProfileOptionMenu from './ProfileOptionMenu';
 const MainPage = (props) => {
     useEffect(()=>{
         props.checkForUserCookie()
@@ -48,14 +48,7 @@ const MainPage = (props) => {
                                             <div className="profileNameWrapper">
                                                 <p className="profileNameText">{props.username}</p>
                                             </div>
-                                            <div className="accountBadgeWrapper">
-                                                <Badge onClick={()=>setUploadProfilePicOpen(true)} color="blue">
-                                                    <p className="badgeText">Change Profile Picture</p>
-                                                </Badge>
-                                                <Badge onClick={doLogout} color="red">
-                                                    <p className="badgeText">Logout</p>
-                                                </Badge>
-                                            </div>
+                                            <ProfileOptionMenu logout={doLogout} setUploadProfilePicOpen={setUploadProfilePicOpen} />
                                         </div>
                                     </div>
                                 }
@@ -63,48 +56,47 @@ const MainPage = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="right">
-                    <div className="rightinner">
-                        <div className="smallScreenProfileOptionsWrapper">
-                            {props.isAuthenticated ?
-                                <div className="profileContainer">
-                                    <div className="profileWrapper">
-                                        <div className="iconusernamewrapper">
-                                            <div className="profileInnerWrapper">
-                                                <img src={props.profilePicUrl || icon} className="profilepic" />
-                                            </div>
-                                            <div className="profileNameWrapper">
-                                                <p className="profileNameText">{props.username}</p>
-                                            </div>
+                <div className="middle">
+                    <div className="smallScreenProfileOptionsWrapper">
+                        {props.isAuthenticated ?
+                            <div className="profileContainer">
+                                <div className="profileWrapper">
+                                    <div className="iconusernamewrapper">
+                                        <div className="profileInnerWrapper">
+                                            <img src={props.profilePicUrl || icon} className="profilepic" />
                                         </div>
-                                        <div className="accountBadgeWrapper">
-                                            <Badge onClick={()=>setUploadProfilePicOpen(true)} color="blue">
-                                                <p className="badgeText">Change Profile Picture</p>
-                                            </Badge>
-                                            <Badge onClick={doLogout} color="red">
-                                                <p className="badgeText">Logout</p>
-                                            </Badge>
+                                        <div className="profileNameWrapper">
+                                            <p className="profileNameText">{props.username}</p>
                                         </div>
                                     </div>
-                                    <div className="tweetButtonWrapper">
-                                        <Button onClick={()=>setTweetPosterModalOpen(true)}>Tweet</Button>
+                                    <div className="accountBadgeWrapper">
+                                        <Badge onClick={()=>setUploadProfilePicOpen(true)} color="blue">
+                                            <p className="badgeText">Change Profile Picture</p>
+                                        </Badge>
+                                        <Badge onClick={doLogout} color="red">
+                                            <p className="badgeText">Logout</p>
+                                        </Badge>
                                     </div>
                                 </div>
-                                :
-                                <SignInBox />
-                            }
-                        </div>
-                        <div className="tweetFeedWrapper">
-                            <TweetFeed /> 
-                        </div>
-                        {!props.isAuthenticated && 
-                            <div className="rightbar">
-                                <SignInBox />
+                                <div className="tweetButtonWrapper">
+                                    <Button onClick={()=>setTweetPosterModalOpen(true)}>Tweet</Button>
+                                </div>
                             </div>
-                        } 
+                            :
+                            <SignInBox />
+                        }
+                    </div>
+                    <div className="tweetFeedWrapper">
+                        <TweetFeed /> 
                     </div>
                 </div>
-                 
+                <div className="right">
+                    {!props.isAuthenticated && 
+                        <div className="rightbar">
+                            <SignInBox />
+                        </div>
+                    }
+                </div>
             </div>
             
         </div>

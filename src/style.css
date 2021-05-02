@@ -9,12 +9,11 @@ html, body {
 }
 
 .tweetFeedWrapper {
-    flex-grow: 1;
     padding: 0;
     border-top-style: solid;
     border-top-color: rgb(235, 238, 240);
     border-top-width: 1px;
-    width: 33vw;
+    width: 100%;
 }
 
 .tweetWrapper {
@@ -39,6 +38,8 @@ html, body {
     flex-basis: auto;
     border-radius: 9999px;
     overflow: hidden;
+    width: 48px;
+    height: 48px;
 }
 
 .profilePicture {
@@ -199,7 +200,9 @@ textarea.InputStyle {
     height: 100%;
     display: flex;
     flex-direction: row;
-    align-content: stretch;
+    align-content: center;
+    padding: 0 !important;
+    margin: 0;
 }
 
 .left {
@@ -208,14 +211,24 @@ textarea.InputStyle {
     flex-direction: row;
     justify-content: flex-end;
     flex-grow: 1;
+    flex-basis: 33.33%;
+    flex-shrink: 1;
+}
+
+.middle {
+    width: 600px;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .right {
+    flex-basis: 33.33%;
+    flex-grow: 1;
+    flex-shrink: 1;
     display: flex;
     justify-content: flex-start;
     margin: 0;
     flex-direction: row;
-    flex-grow: 2;
 }
 
 .rightinner {
@@ -255,6 +268,7 @@ textarea.InputStyle {
     margin: 0;
     padding: 0;
     margin-right: 4rem;
+    margin-bottom: 1rem;
 }
 
 .commenttext {
@@ -460,8 +474,14 @@ textarea.InputStyle {
     }
 
     .right {
-        width: 100%;
+        display: none;
     }
+
+    .Container {
+        align-items: center;
+        justify-content: center;
+    }
+
 
     .rightinner {
       width: 100%;
@@ -472,7 +492,6 @@ textarea.InputStyle {
     }
 
   .tweetFeedWrapper {
-      width: 65vw;
       margin: 0;
   }
   .rightbar {
@@ -489,7 +508,6 @@ textarea.InputStyle {
     display: flex;
     margin: 0;
     margin-bottom: 1rem;
-    width: 65vw;
     justify-content: center;
     align-items: center;
   }
@@ -551,14 +569,26 @@ textarea.InputStyle {
     }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 635px) {
     .tweetFeedWrapper {
       width: 100%;
+  }
+
+  .middle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 1;
   }
 
   .tweetPicture {
     max-width: 60vw;
     max-height: 60vw;
+  }
+
+  .tweetWrapper {
+      padding: 0.5rem;
   }
 
   .smallScreenProfileOptionsWrapper {

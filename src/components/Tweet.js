@@ -7,6 +7,7 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import Badge from './Badge';
 import { getTweets, deleteTweet, postComment, patchTweet } from '../actions/tweetActions';
 import TweetModal from './TweetModal';
+import CommentOptionMenu from './CommentOptionMenu';
 
 function Tweet(props) {
     const [editTweetModalOpen, setEditTweetModalOpen] = useState(false);
@@ -37,14 +38,7 @@ function Tweet(props) {
                     <Comments tweet={props.tweet} />
                 </div>
                 {(props.isAuthenticated && props.userid===props.tweet.userid) &&
-                    <div className="badgeIconWrapper">
-                        <Badge leftoffset icon onClick={()=>setEditTweetModalOpen(true)}>
-                            <FontAwesomeIcon icon={faEdit} />
-                        </Badge>
-                        <Badge icon onClick={deleteTweet}>
-                            <FontAwesomeIcon icon={faTrashAlt}/>
-                        </Badge>
-                    </div>
+                    <CommentOptionMenu delete={deleteTweet} setEditTweetModalOpen={setEditTweetModalOpen} />
                 }
             </div>
         </>

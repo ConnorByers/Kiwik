@@ -18,9 +18,7 @@ const uploadImage = async (file, folder) => {
       Key: `${folder}/${uuid.v4()}.${file_ext}`,
     };
     let location = '';
-    console.log('a')
     const uploadPromise = s3Bucket.upload(params).promise();
-    console.log('b')
     return uploadPromise.then((data) => {
         return { url: data.Location, success: true };
     }).catch((err) => {

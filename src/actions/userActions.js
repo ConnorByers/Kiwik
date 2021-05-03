@@ -1,6 +1,7 @@
 import { ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER, CHANGE_PROFILE_PICTURE } from './types';
 import history from '../history';
 import axios from 'axios';
+import { RESTAPI_ENDPOINT } from '../config';
 
 export const addSuccessLogin = (user) => {
     return {
@@ -11,7 +12,7 @@ export const addSuccessLogin = (user) => {
 
 export const logout = () => {
     return (dispatch) => {
-        axios.post('api/users/logout').then(res=>{
+        axios.post(`${RESTAPI_ENDPOINT}/api/users/logout`).then(res=>{
             dispatch( {
                 type: LOGOUT
             });
@@ -38,7 +39,7 @@ export const changeProfilePicture = (url, userId) => {
 
 export const checkForUserCookie = (user) => {
     return (dispatch, getState) => {
-        axios.get('api/users/checkcookie')
+        axios.get(`${RESTAPI_ENDPOINT}/api/users/checkcookie`)
             .then(res => {
                 dispatch(addUser({ username: res.data.username, id: res.data.id, profilepic: res.data.profilepic }));
             }).catch((err) => {
@@ -54,7 +55,7 @@ export const register = (username, email, password) => {
             email,
             password,
         };
-        axios.post('/api/users', newUser)
+        axios.post(`${RESTAPI_ENDPOINT}/api/users`, newUser)
         .then(res => {
             if(res.data.success) {
                 history.push('/');
@@ -74,7 +75,7 @@ export const login = (email, password) => {
             email,
             password,
         };
-        axios.post('/api/users/auth', newUser)
+        axios.post(`${RESTAPI_ENDPOINT}/api/users/auth`, newUser)
             .then(res => {
                 if(res.data.success){
                     dispatch(addSuccessLogin({ username: res.data.username, id: res.data.id, profilepic: res.data.profilepic }));
@@ -94,12 +95,11 @@ export const uploadProfilePicture = (picture, userId) => {
         const formData = new FormData();
         formData.append("avatar", picture);
         formData.append("userId", userId);
-        axios.post('/api/users/profilepic', formData, {
+        axios.post(`${RESTAPI_ENDPOINT}/api/users/profilepic`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         }).then(res=>{
-            console.log(res);
             dispatch(changeProfilePicture(res.data.profilepic, userId));
         }).catch((e)=>{
             console.log(e);

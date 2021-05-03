@@ -22,14 +22,12 @@ router.post('/',(req,res)=>{
     const posUser = req.body;
 
     if(!posUser.username||!posUser.email||!posUser.password){
-        console.log('problem here');
         return res.json({message: 'Please enter all of the required fields',success:false});
     }
 
     User.findOne({email: posUser.email})
     .then((user)=>{
         if(user){
-            console.log('problem here2');
             return res.json({message: 'User already exists. Use a different email',success:false});
         }
         const newUser = new User({
@@ -90,7 +88,6 @@ router.post('/auth', (req,res)=>{
 });
 
 router.get('/checkcookie', middleware, (req,res)=>{
-    console.log("got to check cookie");
     User.findOne({_id: req.userid},(err,foundUser)=>{
         if(err){
             console.log(err);

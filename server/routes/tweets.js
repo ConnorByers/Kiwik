@@ -10,7 +10,6 @@ const fileFilter = (req, file, cb) => {
     if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
         cb(null, true);
     } else {
-        console.log('cb false -------------------------------')
         cb(null, false);
     }
 };
@@ -137,10 +136,8 @@ router.post('/comment/:id',AuthMiddleware,(req,res)=>{
     
     Tweet.findById(req.params.id) 
     .then(tweet=>{
-        //newComment.save();
-        console.log('here');
         tweet.comments = [...tweet.comments, newComment];
-        tweet.save().then(newTwit=>res.json(newTwit)).catch(()=>console.log('error here'));
+        tweet.save().then(newTwit=>res.json(newTwit)).catch((e)=>console.log(e));
         
     }).catch(err=>res.status(404).json({success: false}));
 });

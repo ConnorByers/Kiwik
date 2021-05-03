@@ -1,0 +1,1 @@
+export const RESTAPI_ENDPOINT = process.env.REACT_APP_RESTAPI_ENDPOINT;

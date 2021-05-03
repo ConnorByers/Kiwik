@@ -23,16 +23,6 @@ const UserSchema = new Schema({
 });
 
 UserSchema.methods.checkPasswordMatch = (password,hashed,next) => {
-    /*bcrypt.compare(password,this.password,(err,success)=>{
-        if(err){
-            console.log(this.username);
-            next(err);
-        }
-        if(success){
-            console.log('here2');
-            next(err,success);
-        }
-    });*/
     bcrypt.compare(password,hashed).then(res=>{
         if(res){
             next(true);
@@ -40,7 +30,7 @@ UserSchema.methods.checkPasswordMatch = (password,hashed,next) => {
         else{
             next(false);
         }
-    }).catch(err=>console.log('here'));
+    }).catch(err=>console.log('Error in password Match'));
 }
 
 module.exports = mongoose.model('User',UserSchema);

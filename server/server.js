@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const tweets = require('./routes/tweets');
 const users = require('./routes/users');
@@ -13,6 +14,18 @@ mongoose.connect(MongoURI,{useNewUrlParser:true, useUnifiedTopology:false,useCre
 .then(()=>console.log('MongoDB connected'))
 .catch(err=>console.log(err));
 
+const whitelist = ['http://localhost:3000', 'https://localhost:3000']
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 

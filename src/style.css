@@ -468,6 +468,31 @@ textarea.InputStyle {
     display: none;
 }
 
+.trendingWord {
+    text-align: left;
+    margin: 0;
+    margin-left: 1rem;
+    margin-bottom: 0.25rem;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.trendingWordUses {
+    text-align: left;
+    margin: 0;
+    margin-left: 1.25rem;
+    font-size: 14px;
+    padding-bottom: 1rem;
+}
+
+.greyModal {
+    background-color: rgb(247, 249, 250);
+}
+
+.greyModalDiv:hover {
+    background-color: rgb(232 234 235)
+}
+
 @media only screen and (max-width: 1200px) {
     .left {
         display: none;

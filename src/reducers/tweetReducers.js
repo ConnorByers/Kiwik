@@ -1,4 +1,4 @@
-import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER, PATCH_TWEET, CHANGE_PROFILE_PICTURE } from '../actions/types';
+import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER, PATCH_TWEET, CHANGE_PROFILE_PICTURE, GET_TRENDING_WORDS } from '../actions/types';
 
 const initState = {
     tweets: [],
@@ -6,6 +6,7 @@ const initState = {
     isAuthenticated: false,
     userid:'',
     profilePicUrl: '',
+    trendingWords: [],
 }
 
 export default function(state=initState,action){
@@ -60,6 +61,11 @@ export default function(state=initState,action){
                 ...state,
                 profilePicUrl: action.data.url,
                 tweets: state.tweets.map(tweet=>tweet.userid === action.data.userId ? { ...tweet, tweetprofilepic: action.data.url } : tweet)
+            }
+        case GET_TRENDING_WORDS:
+            return {
+                ...state,
+                trendingWords: action.data,
             }
         default:
             return state;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET } from './types';
+import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET, GET_TRENDING_WORDS } from './types';
 import { RESTAPI_ENDPOINT } from '../config';
 
 export const getTweets = () => dispatch => {
@@ -62,4 +62,12 @@ export const patchTweet = (id, tweetUpdates) => dispatch => {
         type: PATCH_TWEET,
         data: res.data
     })).catch(err=>alert("You must login to update a comment"));
+};
+
+export const getTrendingWords = () => dispatch => {
+    axios.get(`${RESTAPI_ENDPOINT}/api/tweets/trending`, { withCredentials: true })
+    .then(res=>dispatch({
+        type: GET_TRENDING_WORDS,
+        data: res.data
+    }));
 };

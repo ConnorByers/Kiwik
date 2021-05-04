@@ -11,6 +11,8 @@ import ProfilePicModal from './ProfilePicModal';
 import icon from '../icon.png';
 import Badge from './Badge';
 import ProfileOptionMenu from './ProfileOptionMenu';
+import TrendingWords from './TrendingWords';
+
 const MainPage = (props) => {
     useEffect(()=>{
         props.checkForUserCookie()
@@ -91,11 +93,12 @@ const MainPage = (props) => {
                     </div>
                 </div>
                 <div className="right">
-                    {!props.isAuthenticated && 
-                        <div className="rightbar">
+                    <div className="rightbar">
+                        {!props.isAuthenticated && 
                             <SignInBox />
-                        </div>
-                    }
+                        }
+                        <TrendingWords />
+                    </div>
                 </div>
             </div>
             

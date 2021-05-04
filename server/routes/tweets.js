@@ -5,6 +5,7 @@ const { Tweet, Comment} = require('../models/Tweet');
 const User = require('../models/User');
 const { uploadImage } = require('../aws');
 const multer = require('multer');
+const pos = require('pos');
 
 const fileFilter = (req, file, cb) => {
     if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
@@ -140,6 +141,33 @@ router.post('/comment/:id',AuthMiddleware,(req,res)=>{
         tweet.save().then(newTwit=>res.json(newTwit)).catch((e)=>console.log(e));
         
     }).catch(err=>res.status(404).json({success: false}));
+});
+
+router.get('/trending', async (req,res) => {
+    Tweet.find().sort({date:-1}).limit(100).then(async (tweets) => {
+        const wordMap = {};
+        await Promise.all(
+            tweets.map(async (tweet) => {
+                if (tweet.message) {
+                    const words = new pos.Lexer().lex(tweet.message);
+                    const tagger = new pos.Tagger();
+                    const taggedWords = tagger.tag(words);
+                    const sentenceWordsMap = {}
+                    taggedWords.forEach((taggedWordPair) => {
+                        if (taggedWordPair[1] === 'NN' || taggedWordPair[1] === 'NNPS' || taggedWordPair[1] === 'NNP' || taggedWordPair[1] === 'NNS') {
+                            sentenceWordsMap[taggedWordPair[0]] = 1;
+                        }
+                    });
+                    Object.keys(sentenceWordsMap).forEach((key) => {
+                        wordMap[key] = (wordMap[key] || 0) + 1;
+                    });
+                }
+            }),
+        );
+        res.json(Object.entries(wordMap).sort((firstEl, secondEl) => {
+            return secondEl[1] - firstEl[1];
+        }).slice(0,5));    
+    });
 });
 
 module.exports = router;

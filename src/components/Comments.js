@@ -9,29 +9,30 @@ function Comments(props) {
         setOpen(!isOpen);
     };
     return (
-        <div className="commentSectionWrapper">
-            {props.tweet.comments.length !== 0 &&
-                <div className="commentsWrapper">
-                    {isOpen ?
-                        <>
-                            <div className="commentline"></div>
-                            {props.tweet.comments.map((comment) => (
-                                <div key={comment._id}>
-                                    <p className="commentuser">{comment.username}:</p>
-                                    <p className="commenttext">{comment.message}</p>
-                                </div>
-                            ))}
-                            <a onClick={toggleOpen} className="toggleText">Click to collapse</a>
-                        </>
-                        :
-                        <>
-                            <a onClick={toggleOpen} className="toggleText">Click to view comments</a>
-                        </>
-                    }
-                </div>
-            }
-            
-        </div>
+        <>
+        {props.tweet.comments.length !== 0 &&
+            <div className="commentSectionWrapper">
+                    <div className="commentsWrapper">
+                        {isOpen ?
+                            <>
+                                <div className="commentline"></div>
+                                {props.tweet.comments.map((comment) => (
+                                    <div key={comment._id}>
+                                        <p className="commentuser">{comment.username}:</p>
+                                        <p className="commenttext">{comment.message}</p>
+                                    </div>
+                                ))}
+                                <a onClick={toggleOpen} className="toggleText">Click to collapse</a>
+                            </>
+                            :
+                            <>
+                                <a onClick={toggleOpen} className="toggleText">Click to view comments</a>
+                            </>
+                        }
+                    </div>
+            </div>
+        }
+        </>
     )
 }
 

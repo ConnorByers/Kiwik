@@ -8,9 +8,11 @@ import Badge from './Badge';
 import { getTweets, deleteTweet, postComment, patchTweet } from '../actions/tweetActions';
 import TweetModal from './TweetModal';
 import CommentOptionMenu from './CommentOptionMenu';
+import CommentModal from './CommentModal';
 
 function Tweet(props) {
     const [editTweetModalOpen, setEditTweetModalOpen] = useState(false);
+    const [isCommentModalOpen, setCommentModalOpen] = useState(false);
 
     const deleteTweet = () => {
         props.deleteTweet(props.tweet._id);
@@ -19,6 +21,7 @@ function Tweet(props) {
     return (
         <>
             <div key={props.tweet._id} className="tweetWrapper">
+                <CommentModal setOpen={setCommentModalOpen} isOpen={isCommentModalOpen} tweetId={props.tweet._id} />
                 <TweetModal edit isOpen={editTweetModalOpen} setOpen={setEditTweetModalOpen} tweet={props.tweet} />
                 <div className="profilePictureWrapper">
                     <div className="innerProfilePictureWrapper">
@@ -37,8 +40,8 @@ function Tweet(props) {
                     </div>
                     <Comments tweet={props.tweet} />
                 </div>
-                {(props.isAuthenticated && props.userid===props.tweet.userid) &&
-                    <CommentOptionMenu delete={deleteTweet} setEditTweetModalOpen={setEditTweetModalOpen} />
+                {props.isAuthenticated &&
+                    <CommentOptionMenu ownsTweet={props.userid===props.tweet.userid} delete={deleteTweet} setEditTweetModalOpen={setEditTweetModalOpen} setCommentModalOpen={setCommentModalOpen} />
                 }
             </div>
         </>

@@ -12,7 +12,7 @@ export const addSuccessLogin = (user) => {
 
 export const logout = () => {
     return (dispatch) => {
-        axios.post(`${RESTAPI_ENDPOINT}/api/users/logout`).then(res=>{
+        axios.post(`${RESTAPI_ENDPOINT}/api/users/logout`, {}, { withCredentials: true }).then(res=>{
             dispatch( {
                 type: LOGOUT
             });
@@ -39,7 +39,7 @@ export const changeProfilePicture = (url, userId) => {
 
 export const checkForUserCookie = (user) => {
     return (dispatch, getState) => {
-        axios.get(`${RESTAPI_ENDPOINT}/api/users/checkcookie`)
+        axios.get(`${RESTAPI_ENDPOINT}/api/users/checkcookie`, { withCredentials: true })
             .then(res => {
                 dispatch(addUser({ username: res.data.username, id: res.data.id, profilepic: res.data.profilepic }));
             }).catch((err) => {
@@ -55,7 +55,7 @@ export const register = (username, email, password) => {
             email,
             password,
         };
-        axios.post(`${RESTAPI_ENDPOINT}/api/users`, newUser)
+        axios.post(`${RESTAPI_ENDPOINT}/api/users`, newUser, { withCredentials: true })
         .then(res => {
             if(res.data.success) {
                 history.push('/');
@@ -75,7 +75,7 @@ export const login = (email, password) => {
             email,
             password,
         };
-        axios.post(`${RESTAPI_ENDPOINT}/api/users/auth`, newUser)
+        axios.post(`${RESTAPI_ENDPOINT}/api/users/auth`, newUser, { withCredentials: true })
             .then(res => {
                 if(res.data.success){
                     dispatch(addSuccessLogin({ username: res.data.username, id: res.data.id, profilepic: res.data.profilepic }));
@@ -98,7 +98,8 @@ export const uploadProfilePicture = (picture, userId) => {
         axios.post(`${RESTAPI_ENDPOINT}/api/users/profilepic`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
+            withCredentials: true,
         }).then(res=>{
             dispatch(changeProfilePicture(res.data.profilepic, userId));
         }).catch((e)=>{

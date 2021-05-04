@@ -79,7 +79,11 @@ router.post('/auth', (req,res)=>{
                     const jwtToken = jwt.sign(jwtData,jwtSecret,{
                         expiresIn: '1h'
                     });
-                    res.cookie('token',jwtToken,{httpOnly:true});
+                    res.cookie('token',jwtToken, {
+                        httpOnly: true,
+                        sameSite: true,
+                        secure: false,
+                    });
                     res.json({success: true, username: foundUser.username, id: foundUser._id,  profilepic: foundUser.profilepic});
                 }  
             });

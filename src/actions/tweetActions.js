@@ -3,7 +3,7 @@ import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET } from 
 import { RESTAPI_ENDPOINT } from '../config';
 
 export const getTweets = () => dispatch => {
-    axios.get(`${RESTAPI_ENDPOINT}/api/tweets`)
+    axios.get(`${RESTAPI_ENDPOINT}/api/tweets`, { withCredentials: true })
     .then(res=>dispatch({
         type: GET_TWEETS,
         data: res.data
@@ -21,7 +21,8 @@ export const postTweet = (tweet) => dispatch => {
     axios.post(`${RESTAPI_ENDPOINT}/api/tweets`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
-        }
+        },
+        withCredentials: true
     })
     .then(res=>dispatch({
         type: POST_TWEET,
@@ -30,7 +31,7 @@ export const postTweet = (tweet) => dispatch => {
 };
 
 export const postComment = (id,comment) => dispatch => {
-    axios.post(`${RESTAPI_ENDPOINT}/api/tweets/comment/${id}`,comment)
+    axios.post(`${RESTAPI_ENDPOINT}/api/tweets/comment/${id}`,comment, { withCredentials: true })
     .then(res=>dispatch({
         type: POST_COMMENT,
         data: res.data
@@ -38,7 +39,7 @@ export const postComment = (id,comment) => dispatch => {
 };
 
 export const deleteTweet = (id) => dispatch => {
-    axios.delete(`${RESTAPI_ENDPOINT}/api/tweets/${id}`)
+    axios.delete(`${RESTAPI_ENDPOINT}/api/tweets/${id}`, { withCredentials: true })
     .then(res=>dispatch({
         type: DELETE_TWEET,
         data: id
@@ -54,7 +55,8 @@ export const patchTweet = (id, tweetUpdates) => dispatch => {
     axios.patch(`${RESTAPI_ENDPOINT}/api/tweets/${id}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
-        }
+        },
+        withCredentials: true
     })
     .then(res=>dispatch({
         type: PATCH_TWEET,

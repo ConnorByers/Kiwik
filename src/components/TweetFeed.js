@@ -29,7 +29,7 @@ class TweetFeed extends Component {
         return (
             <>
                 {tweets.map((tweet) => (
-                    <Tweet tweet={tweet} />
+                    <Tweet key={tweet._id} tweet={tweet} />
                 ))}
             </>
         )

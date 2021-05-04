@@ -81,8 +81,8 @@ router.post('/auth', (req,res)=>{
                     });
                     res.cookie('token',jwtToken, {
                         httpOnly: true,
-                        sameSite: true,
-                        secure: false,
+                        sameSite: process.env.NODE_ENV === "development" ? true : "none",
+                        secure: process.env.NODE_ENV === "development" ? false : true,
                     });
                     res.json({success: true, username: foundUser.username, id: foundUser._id,  profilepic: foundUser.profilepic});
                 }  

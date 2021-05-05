@@ -10,6 +10,7 @@ const initState = {
     tweetSetNumber: 0,
     areTweetsLoading: false,
     reachedEndOfTweets: false,
+    trendingWordPage: '',
 }
 
 export default function(state=initState,action){
@@ -20,15 +21,42 @@ export default function(state=initState,action){
                 tweets: action.data
             }
         case POST_TWEET:
-            return {
-                ...state,
-                tweets: [action.data,...state.tweets]
+            if (!state.trendingWordPage) {
+                return {
+                    ...state,
+                    tweets: [action.data,...state.tweets]
+                }
+            } else if (action.data.message.includes(state.trendingWordPage)){
+                return {
+                    ...state,
+                    tweets: [action.data,...state.tweets]
+                }
+            } else {
+                return {
+                    ...state
+                }
             }
         case POST_COMMENT:
-        case PATCH_TWEET:
             return {
                 ...state,
                 tweets: state.tweets.map(tweet=>tweet._id === action.data._id ? { ...tweet, ...action.data } : tweet)
+            }
+        case PATCH_TWEET:
+            if (!state.trendingWordPage) {
+                return {
+                    ...state,
+                    tweets: state.tweets.map(tweet=>tweet._id === action.data._id ? { ...tweet, ...action.data } : tweet)
+                }
+            } else if (action.data.message.includes(state.trendingWordPage)) {
+                return {
+                    ...state,
+                    tweets: state.tweets.map(tweet=>tweet._id === action.data._id ? { ...tweet, ...action.data } : tweet)
+                }
+            } else {
+                return {
+                    ...state,
+                    tweets: state.tweets.filter((tweet)=>tweet._id!==action.data._id)
+                }
             }
         case DELETE_TWEET:
             return {

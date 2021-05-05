@@ -36,13 +36,18 @@ function TweetFeed(props)  {
     }, [props.trendingQueryParam, props.trendingWords, isBottom]);
 
     useEffect(() => {
-        setIsBottom(false);
-        props.setReachedEndOfTweetsValue(false);
-        if (props.trendingQueryParam && isTrendingTopicInState(props.trendingWords, props.trendingQueryParam)) {
-            props.getTopicTweets(props.trendingQueryParam);
-        } else if (props.tweet.tweets.length === 0 || !props.trendingQueryParam) {
-            props.getTweets();
-        }      
+        if (firstLoad) {
+            setFirstLoad(false);
+        } else {
+            setIsBottom(false);
+            props.setReachedEndOfTweetsValue(false);
+            if (props.trendingQueryParam && isTrendingTopicInState(props.trendingWords, props.trendingQueryParam)) {
+                props.getTopicTweets(props.trendingQueryParam);
+            } else if (props.tweet.tweets.length === 0 || !props.trendingQueryParam) {
+                props.getTweets();
+            }
+        }
+              
     }, [props.trendingQueryParam, props.trendingWords]);
     const tweets = props.tweet.tweets;
     return (

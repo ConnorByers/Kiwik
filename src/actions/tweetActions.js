@@ -30,10 +30,13 @@ export const postTweet = (tweet) => dispatch => {
         },
         withCredentials: true
     })
-    .then(res=>dispatch({
-        type: POST_TWEET,
-        data: res.data
-    })).catch(err=>alert("You must login to send a message"));
+    .then(res=>{
+        dispatch({
+            type: POST_TWEET,
+            data: res.data
+        });
+        dispatch(getTrendingWords());
+    }).catch(err=>alert("You must login to send a message"));
 };
 
 export const postComment = (id,comment) => dispatch => {
@@ -64,10 +67,13 @@ export const patchTweet = (id, tweetUpdates) => dispatch => {
         },
         withCredentials: true
     })
-    .then(res=>dispatch({
-        type: PATCH_TWEET,
-        data: res.data
-    })).catch(err=>alert("You must login to update a comment"));
+    .then(res=>{
+        dispatch({
+            type: PATCH_TWEET,
+            data: res.data
+        });
+        dispatch(getTrendingWords());
+    }).catch(err=>alert("You must login to update a comment"));
 };
 
 export const getTrendingWords = () => dispatch => {
@@ -92,10 +98,12 @@ export const getTopicTweets = (topic) => (dispatch, getState) => {
 };
 
 export const redirectToTopic = (topic) => dispatch => {
+    dispatch(setTrendingWordPage(topic));
     history.push(`/?topic=${topic}`);
 }
 
 export const redirectToHome = (topic) => dispatch => {
+    dispatch(setTrendingWordPage(''));
     history.push('/');
 }
 
@@ -133,6 +141,14 @@ export const getNextTrendingTweetSet = (topic) => (dispatch, getState) => {
         });
     }
 }
+
+export const setTrendingWordPage = (value) => {
+    return {
+        type: CHANGE_VALUE,
+        key: 'trendingWordPage',
+        value,
+    }
+};
 
 export const setAreTweetsLoadingValue = (value) => {
     return {

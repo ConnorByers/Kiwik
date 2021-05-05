@@ -12,11 +12,25 @@ import icon from '../icon.png';
 import Badge from './Badge';
 import ProfileOptionMenu from './ProfileOptionMenu';
 import TrendingWords from './TrendingWords';
+import { useLocation } from 'react-router-dom';
+import { redirectToHome } from '../actions/tweetActions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 const MainPage = (props) => {
+    let query = useQuery();
+    const [trendingQueryParam, setTrendingQueryParam] = useState(null);
     useEffect(()=>{
-        props.checkForUserCookie()
+        props.checkForUserCookie();
     }, []);
+
+    useEffect(()=>{
+        setTrendingQueryParam(query.get('topic'));
+    });
 
     const [isTweetPosterModalOpen, setTweetPosterModalOpen] = useState(false);
     const [isUploadProfilePicModalOpen, setUploadProfilePicOpen] = useState(false);
@@ -33,9 +47,15 @@ const MainPage = (props) => {
                     <div className="leftbar">
                         <div className="leftbarwrapper">
                             <div className="leftbarinner">
-                                <div className="logoWrapper">
-                                    <div className="logoinner">
-                                        <img src={logo} className="logo" />
+                                <div className="lefttop">
+                                    <div className="logoWrapper">
+                                        <div className="logoinner">
+                                            <img src={logo} className="logo" />
+                                        </div>
+                                    </div>
+                                    <div className="homeButtonWrapper" onClick={props.redirectToHome}>
+                                        <FontAwesomeIcon icon={faHome} size="2x" fixedWidth style={{color: "black"}} />
+                                        <p className="homeButtonText">Home</p>
                                     </div>
                                 </div>
                                 {props.isAuthenticated &&
@@ -89,7 +109,7 @@ const MainPage = (props) => {
                         }
                     </div>
                     <div className="tweetFeedWrapper">
-                        <TweetFeed /> 
+                        <TweetFeed trendingQueryParam={trendingQueryParam} /> 
                     </div>
                 </div>
                 <div className="right">
@@ -115,6 +135,7 @@ const mapStateToProps = (curState)=>({
 const mapDispatchToProps = {
     checkForUserCookie,
     logout,
+    redirectToHome
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET, GET_TRENDING_WORDS } from './types';
+import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET, GET_TRENDING_WORDS, CLEAR_TWEETS } from './types';
 import { RESTAPI_ENDPOINT } from '../config';
+import { getTrendingTopicIds } from '../selectors';
+import history from '../history';
 
 export const getTweets = () => dispatch => {
     axios.get(`${RESTAPI_ENDPOINT}/api/tweets`, { withCredentials: true })
@@ -71,3 +73,22 @@ export const getTrendingWords = () => dispatch => {
         data: res.data
     }));
 };
+
+export const getTopicTweets = (topic) => (dispatch, getState) => {
+    const ids = getTrendingTopicIds(getState(), topic);
+    axios.post(`${RESTAPI_ENDPOINT}/api/tweets/trending`, { ids }, { withCredentials: true })
+    .then(res=>{
+        dispatch({
+            type: GET_TWEETS,
+            data: res.data,
+        });
+    })
+};
+
+export const redirectToTopic = (topic) => dispatch => {
+    history.push(`/?topic=${topic}`);
+}
+
+export const redirectToHome = (topic) => dispatch => {
+    history.push('/');
+}

@@ -1,46 +1,34 @@
-import React, { Component } from 'react'
-import { getTweets, deleteTweet, postComment, patchTweet } from '../actions/tweetActions';
+import React, { useState, useEffect } from 'react'
+import { getTweets, deleteTweet, postComment, patchTweet, getTopicTweets } from '../actions/tweetActions';
 import { connect } from 'react-redux';
 import Tweet from './Tweet';
+import { isTrendingTopicInState } from '../selectors';
 
-class TweetFeed extends Component {
-    constructor(props){
-        super(props);
-        this.state={ message: '' };
-        this.onChange = this.onChange.bind(this);
-    };
-
-    componentDidMount(){
-        this.props.getTweets();
-    };
-
-    onDeleteClick(id){
-        this.props.deleteTweet(id);
-    };
-
-    onUpdateClick(id, input){
-        this.props.patchTweet(id, {message: input})
-    };
-
-    onChange = (e) => { this.setState({ message: e.target.value }); };
-
-    render() {
-        const tweets = this.props.tweet.tweets;
-        return (
-            <>
-                {tweets.map((tweet) => (
-                    <Tweet key={tweet._id} tweet={tweet} />
-                ))}
-            </>
-        )
-    }
+function TweetFeed(props)  {
+    useEffect(() => {
+        if (props.trendingQueryParam && isTrendingTopicInState(props.trendingWords, props.trendingQueryParam)) {
+            props.getTopicTweets(props.trendingQueryParam);
+        } else if (props.tweet.tweets.length === 0 || !props.trendingQueryParam) {
+            props.getTweets();
+        }
+    }, [props.trendingQueryParam, props.trendingWords]);
+    const tweets = props.tweet.tweets;
+    return (
+        <>
+            {tweets.map((tweet) => (
+                <Tweet key={tweet._id} tweet={tweet} />
+            ))}
+        </>
+    )
+    
 }
 
 const mapStateToProps = (curState) => ({
     tweet: curState.tweet,
     username: curState.tweet.username,
     isAuthenticated: curState.tweet.isAuthenticated,
-    userid: curState.tweet.userid
+    userid: curState.tweet.userid,
+    trendingWords: curState.tweet.trendingWords,
 });
 
 const mapDispatchToProps = {
@@ -48,6 +36,7 @@ const mapDispatchToProps = {
     deleteTweet,
     postComment,
     patchTweet,
+    getTopicTweets,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TweetFeed);

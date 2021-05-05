@@ -6,7 +6,8 @@ const User = require('../models/User');
 const { uploadImage } = require('../aws');
 const multer = require('multer');
 const pos = require('pos');
-
+const mongoose = require('mongoose');
+// mongoose.Types.ObjectId('4edd40c86762e0fb12000003');
 const fileFilter = (req, file, cb) => {
     if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
         cb(null, true);
@@ -155,18 +156,69 @@ router.get('/trending', async (req,res) => {
                     const sentenceWordsMap = {}
                     taggedWords.forEach((taggedWordPair) => {
                         if (taggedWordPair[1] === 'NN' || taggedWordPair[1] === 'NNPS' || taggedWordPair[1] === 'NNP' || taggedWordPair[1] === 'NNS') {
-                            sentenceWordsMap[taggedWordPair[0]] = 1;
+                            sentenceWordsMap[taggedWordPair[0]] = tweet._id;
                         }
                     });
                     Object.keys(sentenceWordsMap).forEach((key) => {
-                        wordMap[key] = (wordMap[key] || 0) + 1;
+                        wordMap[key] = [ (wordMap[key] ? wordMap[key][0] : 0) + 1, wordMap[key] ? [...wordMap[key][1], sentenceWordsMap[key]] : [sentenceWordsMap[key]] ];
                     });
                 }
             }),
         );
         res.json(Object.entries(wordMap).sort((firstEl, secondEl) => {
-            return secondEl[1] - firstEl[1];
+            return secondEl[1][0] - firstEl[1][0];
         }).slice(0,5));    
+    });
+});
+
+router.post('/trending', (req,res) => {
+    Tweet.find({
+        "_id": {
+            "$in": req.body.ids.map((id) => mongoose.Types.ObjectId(id))
+        }
+    }).sort({date:-1})
+    .then((items)=>{
+        const userProfileImages = {};
+        const tweetsWithProfilePromises = items.map(async (tweet)=>{
+            if (tweet.userid in userProfileImages) {
+                return {
+                    comments: tweet.comments,
+                    date: tweet.date,
+                    imageURL: tweet.imageURL,
+                    likes: tweet.likes,
+                    username: tweet.username,
+                    message: tweet.message,
+                    userid: tweet.userid,
+                    _id: tweet._id,
+                    tweetprofilepic: userProfileImages[tweet.userid]
+                }
+            } else {
+                try {
+                    const foundUser = await User.findOne({_id: tweet.userid});
+                    if (!foundUser) {
+                        res.json({msg: "No user found corresponding to user id", success: false});
+                    } else {
+                        userProfileImages[tweet.userid] = foundUser.profilepic || '';
+                        return {
+                            comments: tweet.comments,
+                            date: tweet.date,
+                            imageURL: tweet.imageURL,
+                            likes: tweet.likes,
+                            message: tweet.message,
+                            username: tweet.username,
+                            userid: tweet.userid,
+                            _id: tweet._id,
+                            tweetprofilepic: userProfileImages[tweet.userid]
+                        };
+                    }
+                } catch {
+                    res.json({msg: "Error getting User from id", success: false});
+                }
+            }
+        });
+        Promise.all(tweetsWithProfilePromises).then((tweetsWithProfile)=>{
+            res.json(tweetsWithProfile);
+        });
     });
 });
 

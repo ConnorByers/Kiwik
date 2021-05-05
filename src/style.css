@@ -503,7 +503,7 @@ textarea.InputStyle {
 
 .homeButtonWrapper {
     margin: 0;
-    margin-top: 3rem;
+    margin-top: 1.5rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

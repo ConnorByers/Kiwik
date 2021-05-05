@@ -16,6 +16,8 @@ import { useLocation } from 'react-router-dom';
 import { redirectToHome } from '../actions/tweetActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -24,6 +26,7 @@ function useQuery() {
 const MainPage = (props) => {
     let query = useQuery();
     const [trendingQueryParam, setTrendingQueryParam] = useState(null);
+
     useEffect(()=>{
         props.checkForUserCookie();
     }, []);
@@ -109,7 +112,12 @@ const MainPage = (props) => {
                         }
                     </div>
                     <div className="tweetFeedWrapper">
-                        <TweetFeed trendingQueryParam={trendingQueryParam} /> 
+                        <TweetFeed trendingQueryParam={trendingQueryParam} />
+                        {props.areTweetsLoading &&
+                            <div className="tweetLoadingWrapper">
+                                <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} />
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="right">
@@ -130,12 +138,13 @@ const mapStateToProps = (curState)=>({
     username: curState.tweet.username,
     isAuthenticated: curState.tweet.isAuthenticated,
     profilePicUrl: curState.tweet.profilePicUrl,
+    areTweetsLoading: curState.tweet.areTweetsLoading,
 });
 
 const mapDispatchToProps = {
     checkForUserCookie,
     logout,
-    redirectToHome
+    redirectToHome,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

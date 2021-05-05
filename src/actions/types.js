@@ -11,3 +11,5 @@ export const LOGOUT = 'LOGOUT';
 export const ADD_USER = 'ADD_USER';
 export const CHANGE_PROFILE_PICTURE = 'CHANGE_PROFILE_PICTURE';
 export const GET_TRENDING_WORDS = 'GET_TRENDING_WORDS';
+export const ADD_TWEETS = 'ADD_TWEETS';
+export const CHANGE_VALUE = 'CHANGE_VALUE';

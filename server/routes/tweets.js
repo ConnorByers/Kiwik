@@ -18,8 +18,35 @@ const fileFilter = (req, file, cb) => {
 const storage = multer.memoryStorage()
 const upload = multer({ storage, fileFilter });
 
-router.get('/', (req,res)=>{
-    Tweet.find().sort({date:-1})
+router.get('/trending', async (req,res) => {
+    Tweet.find().sort({date:-1}).limit(100).then(async (tweets) => {
+        const wordMap = {};
+        await Promise.all(
+            tweets.map(async (tweet) => {
+                if (tweet.message) {
+                    const words = new pos.Lexer().lex(tweet.message);
+                    const tagger = new pos.Tagger();
+                    const taggedWords = tagger.tag(words);
+                    const sentenceWordsMap = {}
+                    taggedWords.forEach((taggedWordPair) => {
+                        if (taggedWordPair[1] === 'NN' || taggedWordPair[1] === 'NNPS' || taggedWordPair[1] === 'NNP' || taggedWordPair[1] === 'NNS') {
+                            sentenceWordsMap[taggedWordPair[0]] = tweet._id;
+                        }
+                    });
+                    Object.keys(sentenceWordsMap).forEach((key) => {
+                        wordMap[key] = [ (wordMap[key] ? wordMap[key][0] : 0) + 1, wordMap[key] ? [...wordMap[key][1], sentenceWordsMap[key]] : [sentenceWordsMap[key]] ];
+                    });
+                }
+            }),
+        );
+        res.json(Object.entries(wordMap).sort((firstEl, secondEl) => {
+            return secondEl[1][0] - firstEl[1][0];
+        }).slice(0,5));    
+    });
+});
+
+router.get('/:set', (req,res)=>{
+    Tweet.find().sort({date:-1}).skip(10 * req.params.set).limit(10)
     .then((items)=>{
         const userProfileImages = {};
         const tweetsWithProfilePromises = items.map(async (tweet)=>{
@@ -144,39 +171,12 @@ router.post('/comment/:id',AuthMiddleware,(req,res)=>{
     }).catch(err=>res.status(404).json({success: false}));
 });
 
-router.get('/trending', async (req,res) => {
-    Tweet.find().sort({date:-1}).limit(100).then(async (tweets) => {
-        const wordMap = {};
-        await Promise.all(
-            tweets.map(async (tweet) => {
-                if (tweet.message) {
-                    const words = new pos.Lexer().lex(tweet.message);
-                    const tagger = new pos.Tagger();
-                    const taggedWords = tagger.tag(words);
-                    const sentenceWordsMap = {}
-                    taggedWords.forEach((taggedWordPair) => {
-                        if (taggedWordPair[1] === 'NN' || taggedWordPair[1] === 'NNPS' || taggedWordPair[1] === 'NNP' || taggedWordPair[1] === 'NNS') {
-                            sentenceWordsMap[taggedWordPair[0]] = tweet._id;
-                        }
-                    });
-                    Object.keys(sentenceWordsMap).forEach((key) => {
-                        wordMap[key] = [ (wordMap[key] ? wordMap[key][0] : 0) + 1, wordMap[key] ? [...wordMap[key][1], sentenceWordsMap[key]] : [sentenceWordsMap[key]] ];
-                    });
-                }
-            }),
-        );
-        res.json(Object.entries(wordMap).sort((firstEl, secondEl) => {
-            return secondEl[1][0] - firstEl[1][0];
-        }).slice(0,5));    
-    });
-});
-
-router.post('/trending', (req,res) => {
+router.post('/trending/:set', (req,res) => {
     Tweet.find({
         "_id": {
             "$in": req.body.ids.map((id) => mongoose.Types.ObjectId(id))
         }
-    }).sort({date:-1})
+    }).sort({date:-1}).skip(req.params.set * 15).limit(15)
     .then((items)=>{
         const userProfileImages = {};
         const tweetsWithProfilePromises = items.map(async (tweet)=>{

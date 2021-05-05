@@ -1,15 +1,19 @@
 import axios from 'axios';
-import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET, GET_TRENDING_WORDS, CLEAR_TWEETS } from './types';
+import { GET_TWEETS, POST_TWEET, POST_COMMENT, DELETE_TWEET, PATCH_TWEET, GET_TRENDING_WORDS, CLEAR_TWEETS, ADD_TWEETS, CHANGE_VALUE } from './types';
 import { RESTAPI_ENDPOINT } from '../config';
 import { getTrendingTopicIds } from '../selectors';
 import history from '../history';
 
 export const getTweets = () => dispatch => {
-    axios.get(`${RESTAPI_ENDPOINT}/api/tweets`, { withCredentials: true })
-    .then(res=>dispatch({
-        type: GET_TWEETS,
-        data: res.data
-    }));
+    dispatch(setAreTweetsLoadingValue(true));
+    axios.get(`${RESTAPI_ENDPOINT}/api/tweets/0`, { withCredentials: true })
+    .then(res=>{
+        dispatch({
+            type: GET_TWEETS,
+            data: res.data
+        });
+        dispatch(setAreTweetsLoadingValue(false));
+    });
 };
 
 export const postTweet = (tweet) => dispatch => {
@@ -75,13 +79,15 @@ export const getTrendingWords = () => dispatch => {
 };
 
 export const getTopicTweets = (topic) => (dispatch, getState) => {
+    dispatch(setAreTweetsLoadingValue(true));
     const ids = getTrendingTopicIds(getState(), topic);
-    axios.post(`${RESTAPI_ENDPOINT}/api/tweets/trending`, { ids }, { withCredentials: true })
+    axios.post(`${RESTAPI_ENDPOINT}/api/tweets/trending/0`, { ids }, { withCredentials: true })
     .then(res=>{
         dispatch({
             type: GET_TWEETS,
             data: res.data,
         });
+        dispatch(setAreTweetsLoadingValue(false));
     })
 };
 
@@ -91,4 +97,55 @@ export const redirectToTopic = (topic) => dispatch => {
 
 export const redirectToHome = (topic) => dispatch => {
     history.push('/');
+}
+
+export const getNextTweetSet = () => (dispatch, getState) => {
+    if (!getState().tweet.areTweetsLoading && !getState().tweet.reachedEndOfTweets) {
+        dispatch(setAreTweetsLoadingValue(true));
+        axios.get(`${RESTAPI_ENDPOINT}/api/tweets/${getState().tweet.tweetSetNumber + 1}`)
+        .then(res=>{
+            dispatch({
+                type: ADD_TWEETS,
+                data: res.data
+            });
+            if (res.data.length < 15) {
+                dispatch(setReachedEndOfTweetsValue(true));
+            }
+            dispatch(setAreTweetsLoadingValue(false));
+        });
+    }
+}
+
+export const getNextTrendingTweetSet = (topic) => (dispatch, getState) => {
+    if (!getState().tweet.areTweetsLoading && !getState().tweet.reachedEndOfTweets) {
+        dispatch(setAreTweetsLoadingValue(true));
+        const ids = getTrendingTopicIds(getState(), topic);
+        axios.post(`${RESTAPI_ENDPOINT}/api/tweets/trending/${getState().tweet.tweetSetNumber + 1}`, { ids }, { withCredentials: true })
+        .then(res=>{
+            dispatch({
+                type: ADD_TWEETS,
+                data: res.data
+            });
+            if (res.data.length < 15) {
+                dispatch(setReachedEndOfTweetsValue(true));
+            }
+            dispatch(setAreTweetsLoadingValue(false));
+        });
+    }
+}
+
+export const setAreTweetsLoadingValue = (value) => {
+    return {
+        type: CHANGE_VALUE,
+        key: 'areTweetsLoading',
+        value,
+    }
+}
+
+export const setReachedEndOfTweetsValue = (value) => {
+    return {
+        type: CHANGE_VALUE,
+        key: 'reachedEndOfTweets',
+        value,
+    }
 }

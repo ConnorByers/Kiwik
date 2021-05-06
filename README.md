@@ -4,7 +4,6 @@ This is a Twitter Clone that I made using MongoDB, Amazon S3, Express, React, No
 
 Some features/functionality includes:
 - Basic CRUD
-- Profile Pictures
 - Trending Topics
 - Lazy loading of Tweets
 

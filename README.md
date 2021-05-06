@@ -33,3 +33,10 @@ In `./server/.env`
 |AWS_SECRET_ACCESS_KEY       | Needed for Amazon s3. Find value on your AWS account|
 |BUCKET_NAME                 | Needed for Amazon s3. Find value on your AWS account|
 |NODE_ENV                    | development|
+
+## Next Steps
+
+-Error handling needs to be improved. Currently create an alert() when, for example, a login fails, which is not optimal.
+-An ability to Like a Tweet
+-The ability to see another person's tweets
+-The ability to retweet and have that appear on your profile's tweets

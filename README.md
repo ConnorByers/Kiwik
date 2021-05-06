@@ -3,6 +3,8 @@
 This is a Twitter Clone that I made using MongoDB, Amazon S3, Express, React, Node and currently is deployed using an AWS EC2 instance.
 
 Some features/functionality includes:
+- Basic CRUD
+- Profile Pictures
 - Trending Topics
 - Lazy loading of Tweets
 

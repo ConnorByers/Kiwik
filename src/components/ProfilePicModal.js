@@ -23,6 +23,8 @@ function ProfilePicModal(props) {
     const [invalidFileTypeFlag, setInvalidFileTypeFlag] = useState(false);
     const onClose = () => {
         setPicture('');
+        setNoFileSelectedFlag(false);
+        setInvalidFileTypeFlag(false);
         props.setOpen(false);
     };
     const onSubmit = (e) => {

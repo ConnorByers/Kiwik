@@ -6,6 +6,8 @@ Some features/functionality includes:
 - Trending Topics
 - Lazy loading of Tweets
 
+Currently live on https://connorbyers.codes
+
 ## Instructions to run
 
 To run this program:

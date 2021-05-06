@@ -21,7 +21,7 @@ function TweetModal(props) {
     const [tweetMessage, setTweetMessage] = useState('');
     const [picture, setPicture] = useState(undefined);
     const [invalidFileTypeFlag, setInvalidFileTypeFlag] = useState(false);
-
+    const [emptyMessageFlag, setEmptyMessageFlag] = useState(false);
     useEffect(()=>{
         if (props.edit) {
             setTweetMessage(props.tweet.message);
@@ -31,6 +31,8 @@ function TweetModal(props) {
     const onClose = () => {
         setTweetMessage('');
         setPicture(undefined);
+        setEmptyMessageFlag(false);
+        setInvalidFileTypeFlag(false);
         props.setOpen(false);
     };
     const onSubmit = (e) => {
@@ -42,6 +44,10 @@ function TweetModal(props) {
                 setPicture('');
                 return;
             }
+        }
+        if (!picture && !tweetMessage) {
+            setEmptyMessageFlag(true);
+            return;
         }
         if(props.edit) {
             props.patchTweet(props.tweet._id, { message: tweetMessage, picture });
@@ -66,6 +72,9 @@ function TweetModal(props) {
                     }
                     {invalidFileTypeFlag &&
                         <p className="errortext">File must be a .jpg, .jpeg or .png</p>
+                    }
+                    {emptyMessageFlag &&
+                        <p className="errortext">Message must not be empty</p>
                     }
                     <Button onClick={onSubmit}>Submit</Button>
                 </div>

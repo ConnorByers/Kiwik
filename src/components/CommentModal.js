@@ -19,12 +19,18 @@ const customStyles = {
 
 function CommentModal(props) {
     const [commentMessage, setCommentMessage] = useState('');
+    const [emptyCommentFlag, setEmptyCommentFlag] = useState(false);
     const onClose = () => {
         setCommentMessage('');
+        setEmptyCommentFlag(false);
         props.setOpen(false);
     };
     const onSubmit = (e) => {
         e.preventDefault();
+        if (!commentMessage) {
+            setEmptyCommentFlag(true);
+            return;
+        }
         props.postComment(props.tweetId, { username: props.username, message: commentMessage });
         onClose();
     };
@@ -37,6 +43,9 @@ function CommentModal(props) {
             <div className="modalWrapper">
                 <h3 className="modalHeader">Enter your Comment</h3>
                 <Input id="Message" type="textarea" value={commentMessage} setValue={setCommentMessage} placeholder="Message" />
+                {emptyCommentFlag && 
+                    <p className="errortext">Comment must not be empty</p>
+                }
                 <Button onClick={onSubmit}>Submit</Button>
             </div>
         </ReactModal>

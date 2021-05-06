@@ -1,6 +1,6 @@
 ## Kiwik
 
-This is a Twitter Clone/Message Board that I made using MongoDB, Amazon S3, Express, React, Node and currently is deployed using an AWS EC2 instance.
+This is a Twitter Clone that I made using MongoDB, Amazon S3, Express, React, Node and currently is deployed using an AWS EC2 instance.
 
 Some features/functionality includes:
 - Trending Topics

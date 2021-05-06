@@ -16,7 +16,7 @@ To run this program:
 3. Add .env files
 4. In the main directory, run `npm run dev` which will run both the frontend and backend
 
-# Environment variables
+## Environment variables
 
 In the main directory `/.env`:
 

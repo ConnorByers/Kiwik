@@ -36,7 +36,7 @@ In `./server/.env`
 
 ## Next Steps
 
--Error handling needs to be improved. Currently create an alert() when, for example, a login fails, which is not optimal.
--An ability to Like a Tweet
--The ability to see another person's tweets
--The ability to retweet and have that appear on your profile's tweets
+- Error handling needs to be improved. Currently only create an alert() when, for example, a login fails, which is not optimal.
+- An ability to "Like" a Tweet
+- The ability to see another person's tweets or profile
+- The ability to "retweet" and have that appear on your profile's tweets

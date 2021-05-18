@@ -24,7 +24,7 @@ router.get('/trending', async (req,res) => {
         await Promise.all(
             tweets.map(async (tweet) => {
                 if (tweet.message) {
-                    const words = new pos.Lexer().lex(tweet.message);
+                    const words = new pos.Lexer().lex(tweet.message.replace(/[^a-zA-Z0-9 ]/g, ''));
                     const tagger = new pos.Tagger();
                     const taggedWords = tagger.tag(words);
                     const sentenceWordsMap = {}

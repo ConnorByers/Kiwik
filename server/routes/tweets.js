@@ -7,6 +7,7 @@ const { uploadImage } = require('../aws');
 const multer = require('multer');
 const pos = require('pos');
 const mongoose = require('mongoose');
+const { capitalizeFirstLetter } = require('../helper');
 // mongoose.Types.ObjectId('4edd40c86762e0fb12000003');
 const fileFilter = (req, file, cb) => {
     if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
@@ -24,7 +25,7 @@ router.get('/trending', async (req,res) => {
         await Promise.all(
             tweets.map(async (tweet) => {
                 if (tweet.message) {
-                    const words = new pos.Lexer().lex(tweet.message.replace(/[^a-zA-Z0-9 ]/g, ''));
+                    const words = new pos.Lexer().lex(tweet.message.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase());
                     const tagger = new pos.Tagger();
                     const taggedWords = tagger.tag(words);
                     const sentenceWordsMap = {}
@@ -39,9 +40,13 @@ router.get('/trending', async (req,res) => {
                 }
             }),
         );
-        res.json(Object.entries(wordMap).sort((firstEl, secondEl) => {
+        const trendingWordsResponse = Object.entries(wordMap).sort((firstEl, secondEl) => {
             return secondEl[1][0] - firstEl[1][0];
-        }).slice(0,5));    
+        }).slice(0,5);
+        trendingWordsResponse.forEach((trendingWordArray) => {
+            trendingWordArray[0] = capitalizeFirstLetter(trendingWordArray[0]);
+        });
+        res.json(trendingWordsResponse);
     });
 });
 

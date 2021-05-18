@@ -2,6 +2,7 @@ import { ADD_SUCCESS_LOGIN, LOGOUT, ADD_USER, CHANGE_PROFILE_PICTURE } from './t
 import history from '../history';
 import axios from 'axios';
 import { RESTAPI_ENDPOINT } from '../config';
+import { resetTweetSetNumber } from './tweetActions';
 
 export const addSuccessLogin = (user) => {
     return {
@@ -13,6 +14,7 @@ export const addSuccessLogin = (user) => {
 export const logout = () => {
     return (dispatch) => {
         axios.post(`${RESTAPI_ENDPOINT}/api/users/logout`, {}, { withCredentials: true }).then(res=>{
+            dispatch(resetTweetSetNumber());
             dispatch( {
                 type: LOGOUT
             });
@@ -79,6 +81,7 @@ export const login = (email, password) => {
             .then(res => {
                 if(res.data.success){
                     dispatch(addSuccessLogin({ username: res.data.username, id: res.data.id, profilepic: res.data.profilepic }));
+                    dispatch(resetTweetSetNumber());
                     history.push('/');
                 }
                 else{

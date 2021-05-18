@@ -99,11 +99,13 @@ export const getTopicTweets = (topic) => (dispatch, getState) => {
 
 export const redirectToTopic = (topic) => dispatch => {
     dispatch(setTrendingWordPage(topic));
+    dispatch(resetTweetSetNumber());
     history.push(`/?topic=${topic}`);
 }
 
 export const redirectToHome = (topic) => dispatch => {
     dispatch(setTrendingWordPage(''));
+    dispatch(resetTweetSetNumber());
     history.push('/');
 }
 
@@ -116,7 +118,7 @@ export const getNextTweetSet = () => (dispatch, getState) => {
                 type: ADD_TWEETS,
                 data: res.data
             });
-            if (res.data.length < 15) {
+            if (res.data.length < 10) {
                 dispatch(setReachedEndOfTweetsValue(true));
             }
             dispatch(setAreTweetsLoadingValue(false));
@@ -134,7 +136,7 @@ export const getNextTrendingTweetSet = (topic) => (dispatch, getState) => {
                 type: ADD_TWEETS,
                 data: res.data
             });
-            if (res.data.length < 15) {
+            if (res.data.length < 10) {
                 dispatch(setReachedEndOfTweetsValue(true));
             }
             dispatch(setAreTweetsLoadingValue(false));
@@ -163,5 +165,13 @@ export const setReachedEndOfTweetsValue = (value) => {
         type: CHANGE_VALUE,
         key: 'reachedEndOfTweets',
         value,
+    }
+}
+
+export const resetTweetSetNumber = () => {
+    return {
+        type: CHANGE_VALUE,
+        key: 'tweetSetNumber',
+        value: 0,
     }
 }
